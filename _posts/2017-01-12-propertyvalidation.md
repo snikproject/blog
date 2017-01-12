@@ -33,7 +33,7 @@ The three major meta classes are the pairwise disjunctive `meta:Function`, `meta
 
 The assertion "$D$ is the *domain* of $p$" means that $\forall (s,p,o) \in T: s \in D$, where $T$ is the set of all triples in some triple store. Analogously, "$R$ is the *range* of $p$" means that $\forall (s,p,o) \in T: o \in R$.
 In the following, we will tackle the domain exemplarily, the range is analogous.
-Using the Semantic Web default open world assumption, we can only prove that a certain resource $r$ is *not* an instance of a class $D$, if there is some class $X$ so that $r \in X$ and $X \cap D = \emptyset$. Otherwise, the open word assumption entails that we simply do not know if the fact $r \in D$ is true or not. As we do not have enough disjunctive information in our ontology, and we want to know if those triples are missing *there* even if they *may* be somewhere else, we use the closed world assumption in the following.
+Using the Semantic Web default open-world assumption, we can only prove that a certain resource $r$ is *not* an instance of a class $D$, if there is some class $X$ so that $r \in X$ and $X \cap D = \emptyset$. Otherwise, the open word assumption entails that we simply do not know if the fact $r \in D$ is true or not. As we do not have enough disjunctive information in our ontology, and we want to know if those triples are missing *there* even if they *may* be somewhere else, we use the closed-world assumption in the following.
 Now we can formulate a naive SPARQL 1.1 query that finds triples violating a property's domain:
 
 ### Naive Domain Verification Query
@@ -94,33 +94,56 @@ FROM <http://www.snik.eu/ontology/meta>
 
 Now while this query may be useful for the future, if actual instance data will be available, for now we want to validate the data that is actually there. As the sub ontologies are full of information about those properties, where do we find it?
 
+Take for example the property `meta:uses`, which has domain `meta:Function` and range `meta:EntityType`.
+The blue book states that the hospital management *uses* a business strategy, so the most intuitive way to represent that fact as an RDF triple is:
 
- When I joined the project I first wanted to get rid of the OWL restrictions as they are convoluted, hard to visualize and I suspect often differ in semantics from what the extractors actually wanted to express. Unfortunately, in this 3-layer constellation they unfortunately seem necessary. This also lead to the compromise of the virtual triples for the visualization, which I worry often hides the actual problem underneath.
+`bb:HospitalManagement meta:uses bb:BusinessStrategy.`
 
+As written above however, we cannot state that fact this way because both subject and object of that triple are not *instances* but *subclasses* of `meta:Function` respectively `meta:EntityType`.
+Also, upon closer inspection, the book means "each hospital management uses *a* business strategy", which can be and is generally formulated in our subontologies as follows:
 
-
-* virtual triples in the graph http://www.snik.eu/ontology/virtual
-* indirect subclasses and Virtuoso
-* RDF
-
-
-
-
-
-## OWL Restrictions
-
-The sub ontologies, such as the blue book `bb` and orange book `ob`, also add `owl:someValuesFrom` property restrictions to their own subclasses.
-
-### bb.rdf
+### OWL Restrictions
 ```
-<owl:Class rdf:about="CodingOfDiagnoses">
-	<rdfs:subClassOf rdf:resource="&meta;Function"/>
-	<rdfs:subClassOf>
-		<owl:Restriction>
-    	<owl:onProperty rdf:resource="&meta;updates"/>
-    	<owl:someValuesFrom rdf:resource="Diagnosis"/>
-    </owl:Restriction>
-	</rdfs:subClassOf>
-	...
+<owl:Class rdf:about="HospitalManagement">
+    <rdfs:subClassOf rdf:resource="&meta;Management"/>
+    <rdfs:subClassOf>
+        <owl:Restriction>
+            <owl:onProperty rdf:resource="&meta;uses"/>
+            <owl:someValuesFrom rdf:resource="BusinessStrategy"/>
+        </owl:Restriction>
+    </rdfs:subClassOf>
+...
 </owl:Class>
 ```
+
+ When I joined the project I first wanted to get rid of the OWL restrictions as they are convoluted, hard to visualize and I suspect often differ in semantics from what the extractors actually wanted to express, as `owl:someValuesFrom` is almost exclusively used (I guess it was the only way connections between classes were translated by our old Excel2OWL tool, so that we cannot recover the original intent of the extractors).
+
+ Unfortunately, in this 3-layer constellation, this modelling method unfortunately seems necessary.
+ This also lead to the compromise of the virtual triples for the visualization, which I worry often hides the actual problem underneath.
+
+The verification question now becomes "Is it actually possible to fulfill this restriction?", again under closed-world assumption.
+We thus need to check whether the class that contains the restriction (technically, that is a superclass of it) is equal to or a subclass of the domain of the property.
+
+```
+select *
+FROM <http://www.snik.eu/ontology/meta>
+FROM <http://www.snik.eu/ontology/bb>
+FROM <http://www.snik.eu/ontology/ob>
+{
+ graph <http://www.snik.eu/ontology/meta> {?p rdfs:domain ?domain.}
+
+ ?s a owl:Class.
+
+ ?s rdfs:subClassOf ?superClass.
+ filter not exists {?superClass a owl:Restriction.}
+ ?s meta:subTopClass ?subTop.
+
+ ?s rdfs:subClassOf ?r.
+ ?r a owl:Restriction.
+ ?r owl:onProperty ?p.
+
+ filter not exists {?s rdfs:subClassOf* ?domain.}
+}
+```
+
+Unfortunately, the simultaneus presence of the SPARQL 1.1 features of property paths and negation (which may have a problematic computational complexity) seemed to have lead to subtly wrong results and finally crashed our SPARQL endpoint.
