@@ -1,2 +1,6 @@
 theme: jekyll-theme-cayman
 title: SNIK Ontology Dashboard
+name: SNIK Ontology
+description: Semantic Network of Hospital Information Management 
+permalink: pretty
+markdown: maruku
