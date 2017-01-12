@@ -1,0 +1,14 @@
+{
+	"queries":
+	[
+		{
+			"name": "domain violations",
+			"url": "https://gist.github.com/KonradHoeffner/235ba45963f6d1ed87dc4554807fc73a/raw",
+		},
+		{
+			"name": "range violations",
+			"url": "https://gist.github.com/KonradHoeffner/01ac5faa4bf1abe572c480d7f7692924/raw",
+		},
+
+	]
+}
