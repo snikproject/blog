@@ -1,8 +1,9 @@
 ---
 layout: post
-title: SNIK Ontology Property Validation
+title: Property Validation
 use_math: true
 tags: [snik, ontology, validation, property, domain, range]
+date: 2017-01-12
 ---
 
 # Problem
@@ -22,6 +23,7 @@ The SNIK Ontology meta model specifies the domain and range for each of its prop
 The three major meta classes are the pairwise disjunctive `meta:Function`, `meta:Role` and `meta:EntityType`, all direct subclasses of `meta:Top`.
 
 ## Example
+
 ### meta.rdf
 ```
 <owl:ObjectProperty rdf:about="uses">
@@ -47,7 +49,7 @@ select ?s ?p ?o ?domain
  filter not exists {?s a ?domain.}
 }
 ```
-Executing this query on the [SNIK SPARQL Endpoint](http://www.snik.eu/sparql) leads to [strange results](http://www.snik.eu/sparql?default-graph-uri=&query=select+%3Fs+%3Fp+%3Fo+%3Fdomain%0D%0A{%0D%0A+%3Fp+rdfs%3Adomain+%3Fdomain.%0D%0A+%3Fs+%3Fp+%3Fo.%0D%0A+filter+not+exists+{%3Fs+a+%3Fdomain.}%0D%0A}), however, such as:
+Executing this query on the [SNIK SPARQL Endpoint](http://www.snik.eu/sparql) leads to [strange results](http://www.snik.eu/sparql/?default-graph-uri=&query=select+%3Fs+%3Fp+%3Fo+%3Fdomain%0D%0A%7B%0D%0A+%3Fp+rdfs%3Adomain+%3Fdomain.%0D%0A+%3Fs+%3Fp+%3Fo.%0D%0A+filter+not+exists+%7B%3Fs+a+%3Fdomain.%7D%0D%0A%7D%0D%0A), however, such as:
 
 | s                   | p          | o               							| domain        |
 |---------------------|------------|-----------------|---------------|
@@ -57,7 +59,7 @@ These results contain multiple elements that we don't want to have:
 
 ### Problems
 1. The triple belongs to the default graph of the SPARQL endpoint and not to our own ontology.
-2. The domain is `rdfs:Resource`, which is almost never explicitly declared as "All things described by RDF are called resources, and are instances of the class rdfs:Resource." [(source)](https://www.w3.org/TR/rdf-schema/#ch_resource)
+2. The domain is `rdfs:Resource`, which is almost never explicitly declared as "All things described by RDF are called resources, and are instances of the class rdfs:Resource." ([source](https://www.w3.org/TR/rdf-schema/#ch_resource)).
 
 We avoid problem 1 by restricting the graph to `http://www.snik.eu/ontology`.
 We can solve problem 2 in our case by inferring implicit class membership through subclass hierarchy using SPARQL 1.1 property paths, as all our classes have a subclass path to `meta:Top`, which is the topmost concept used in our domain and range statements. This leads to:
@@ -81,7 +83,7 @@ However, our new error-detecting query falsely reports seemingly correct results
 |meta:Role |	meta:isInvolvedIn 	| meta:Function 	|meta:Role |
 
 The subject of the triple and the domain are exactly the same, why are they incorrect?
-First, these triples are the actual definitions of the domain statement, they should not even be selected by the first two triple patterns. They are what we call [virtual triples](#virtual) from the graph `http://www.snik.eu/ontology/virtual`, which are used to visually connect the domain and range of a property in the [SNIK Graph](http://www.snik.eu/graph) visualization. And second, this shows a common misconception and conceptual problem with the SNIK ontology: domain and range are only concernced with the *instances* of classes, the properties are not supposed to be used between classes themselves! This is problematic because normally there are only two abstraction levels: the schema and the instance level. But the sub ontologies of the meta model are ontologies of classes themselves, that should be usable by a third level of actual instances of concrete hospitals. Thus, when we can correct the query, we get only a single result, which is an actual modelling error and may be already corrected [when you execute the query](www.snik.eu/sparql?default-graph-uri=&query=select+%3Fs+%3Fp+%3Fo+%3Fdomain%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fbb>%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fob>%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta>%0D%0A{%0D%0A+%3Fp+rdfs%3Adomain+%3Fdomain.+%0D%0A+%3Fs+%3Fp+%3Fo.%0D%0A+filter+not+exists+{%3Fs+rdfs%3AsubClassOf*%2Fa+%3Fdomain.}%0D%0A}&should-sponge=&format=text%2Fhtml)):
+First, these triples are the actual definitions of the domain statement, they should not even be selected by the first two triple patterns. They are what we call [virtual triples](#virtual) from the graph `http://www.snik.eu/ontology/virtual`, which are used to visually connect the domain and range of a property in the [SNIK Graph](http://www.snik.eu/graph) visualization. And second, this shows a common misconception and conceptual problem with the SNIK ontology: domain and range are only concernced with the *instances* of classes, the properties are not supposed to be used between classes themselves! This is problematic because normally there are only two abstraction levels: the schema and the instance level. But the sub ontologies of the meta model are ontologies of classes themselves, that should be usable by a third level of actual instances of concrete hospitals. Thus, when we can correct the query, we get only a single result, which is an actual modelling error and may be already corrected [when you execute the query](www.snik.eu/sparql/?default-graph-uri=&query=select+%3Fs+%3Fp+%3Fo+%3Fdomain%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fbb>%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fob>%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta>%0D%0A%7B%0D%0A+%3Fp+rdfs%3Adomain+%3Fdomain.%0D%0A+%3Fs+%3Fp+%3Fo.%0D%0A+filter+not+exists+%7B%3Fs+rdfs%3AsubClassOf*%2Fa+%3Fdomain.}%0D%0A}%0D%0A)):
 
 ```
 select ?s ?p ?o ?domain
@@ -118,7 +120,7 @@ meta:uses rdfs:range bb:BusinessStrategy.
 No, because this would mean (as always for domain, range is analogous) that all subjects of `meta:uses` are *both* instances of `meta:Function` *and* `bb:HospitalManagement`.
 Thus, the effective domain would become the intersection of them, which is equal to `bb:HospitalManagement` as it is a subclass of `meta:Function`.
 But we want to restrict `meta:uses` not in the general case but *only* when the subject is of type `bb:HospitalManagement`.
-We could solve this by creating a subpropertiy of `meta:uses`, let's say `bb:HospitalManagementUses`, and state domain and range for *that*, but we would need to add [1111 new properties](www.snik.eu/sparql?default-graph-uri=http%3A%2F%2Fwww.snik.eu%2Fontology&query=select+count(%3Fs)%0D%0A{%0D%0A+%3Fs+owl%3AonProperty+meta%3Auses.%0D%0A}) for `meta:uses` alone.
+We could solve this by creating a subpropertiy of `meta:uses`, let's say `bb:HospitalManagementUses`, and state domain and range for *that*, but we would need to add [1111 new properties](www.snik.eu/sparql?default-graph-uri=http%3A%2F%2Fwww.snik.eu%2Fontology&query=select+count(%3Fs)%0D%0A%7B%0D%0A+%3Fs+owl%3AonProperty+meta%3Auses.%0D%0A}) for `meta:uses` alone.
 This approach may be feasible on smaller ontologies, however; we investigate it for the upcoming [IT4IT](http://www.opengroup.org/IT4IT) ontology.
 
 Also, upon closer inspection, the book means "each hospital management uses *a* business strategy" (there is at least one), for which we need a different formalism:
@@ -141,6 +143,7 @@ Protegé does its best to sweep this problem under the carpet:
 ![](http://protegewiki.stanford.edu/images/6/63/Alr-matrix-classes.png)
 
 The full ugliness of our example case in an RDF/XML snippet using blanknodes:
+
 ```
 <owl:Class rdf:about="HospitalManagement">
     <rdfs:subClassOf rdf:resource="&meta;Management"/>
@@ -153,6 +156,7 @@ The full ugliness of our example case in an RDF/XML snippet using blanknodes:
 ...
 </owl:Class>
 ```
+
 Note that this means that each instance of hospital management is not prevented from *using* more than one, or something else in addition to a business strategy.
 
 <a name="virtual"></a>
@@ -192,9 +196,10 @@ The simultaneus presence of the SPARQL 1.1 features of property paths and negati
  2. remove "filter not exists {} " but leave the inner triple patterns, save result as TSV in "correct"
  3. remove first line and quotation marks from both files and run "comm -23 all correct > incorrect"
 
-Many of the errors were eliminated by deleting and reuploading the `ob` graph, that likely still contained some leftovers from previous versions, so that finally 80 inconsistent domains were found. However this method also has to be applied to the `rdfs:range` and in the future for new ontologies so that I settled a this monster of a workaround-SPARQL-query. I'm not proud of it but with [98 results](www.snik.eu/sparql?default-graph-uri=&query=select+distinct(%3Fs)%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta>%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fbb>%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fob>%0D%0A{%0D%0A+graph+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta>+{%3Fp+a+owl%3AObjectProperty.}%0D%0A+%3Fp+rdfs%3Adomain+%3Fdomain.%0D%0A%0D%0A+%3Fs+a+owl%3AClass.%0D%0A%0D%0A+%3Fs+rdfs%3AsubClassOf+%3FsuperClass.%0D%0A+filter+not+exists+{%3FsuperClass+a+owl%3ARestriction.}%0D%0A%0D%0A+%3Fs+rdfs%3AsubClassOf+%3Fr.%0D%0A+%3Fr+a+owl%3ARestriction.%0D%0A+%3Fr+owl%3AsomeValuesFrom+%3Fo.%0D%0A+%3Fr+owl%3AonProperty+%3Fp.%0D%0A%0D%0A+filter(%3Fs!%3D%3Fdomain)%0D%0A+MINUS+{%3Fs+rdfs%3AsubClassOf+%3Fdomain.}%0D%0A+MINUS+{%3Fs+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Fdomain].}%0D%0A+MINUS+{%3Fs+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Fdomain]].}%0D%0A+MINUS+{%3Fs+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Fdomain]]].}%0D%0A+MINUS+{%3Fs+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Fdomain]]]].}%0D%0A+MINUS+{%3Fs+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf%3Fdomain]]]]].}%0D%0A+MINUS+{%3Fs+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Fdomain]]]]]].}%0D%0A}) it is reasonably close to correct to be used for manual checking and I don't have the time to do Virtuoso (07.20.3217) bugfixing. I tried to create a minimal working example to ask for help from the Virtuoso developers but as soon as I removed something from the query, the problem did not occur anymore.
+Many of the errors were eliminated by deleting and reuploading the `ob` graph, that likely still contained some leftovers from previous versions, so that finally 80 inconsistent domains were found. However this method also has to be applied to the `rdfs:range` and in the future for new ontologies so that I settled a this monster of a workaround-SPARQL-query. I'm not proud of it but with [98 results](www.snik.eu/sparql?default-graph-uri=&query=select+distinct(%3Fs)%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta>%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fbb>%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fob>%0D%0A%7B%0D%0A+graph+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta>+%7B%3Fp+a+owl%3AObjectProperty.}%0D%0A+%3Fp+rdfs%3Adomain+%3Fdomain.%0D%0A%0D%0A+%3Fs+a+owl%3AClass.%0D%0A%0D%0A+%3Fs+rdfs%3AsubClassOf+%3FsuperClass.%0D%0A+filter+not+exists+%7B%3FsuperClass+a+owl%3ARestriction.}%0D%0A%0D%0A+%3Fs+rdfs%3AsubClassOf+%3Fr.%0D%0A+%3Fr+a+owl%3ARestriction.%0D%0A+%3Fr+owl%3AsomeValuesFrom+%3Fo.%0D%0A+%3Fr+owl%3AonProperty+%3Fp.%0D%0A%0D%0A+filter(%3Fs!%3D%3Fdomain)%0D%0A+MINUS+%7B%3Fs+rdfs%3AsubClassOf+%3Fdomain.}%0D%0A+MINUS+%7B%3Fs+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Fdomain].}%0D%0A+MINUS+%7B%3Fs+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Fdomain]].}%0D%0A+MINUS+%7B%3Fs+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Fdomain]]].}%0D%0A+MINUS+%7B%3Fs+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Fdomain]]]].}%0D%0A+MINUS+%7B%3Fs+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf%3Fdomain]]]]].}%0D%0A+MINUS+%7B%3Fs+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Fdomain]]]]]].}%0D%0A}) it is reasonably close to correct to be used for manual checking and I don't have the time to do Virtuoso (07.20.3217) bugfixing. I tried to create a minimal working example to ask for help from the Virtuoso developers but as soon as I removed something from the query, the problem did not occur anymore.
 
 Anyways, here is the final query for the domain (also [online](https://gist.github.com/KonradHoeffner/d208a262806a3a080650494c90382589)):
+
 ```
 select distinct(?s) ?domain
 FROM <http://www.snik.eu/ontology/meta>
@@ -225,7 +230,7 @@ FROM <http://www.snik.eu/ontology/ob>
 }
 ```
 
-And for the range ( [results](www.snik.eu/sparql?default-graph-uri=&query=select+distinct(%3Fs)+%3Frange%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta>%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fbb>%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fob>%0D%0A{%0D%0A+graph+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta>+{%3Fp+a+owl%3AObjectProperty.}%0D%0A+%3Fp+rdfs%3Arange+%3Frange.%0D%0A%0D%0A+%3Fs+a+owl%3AClass.%0D%0A%0D%0A+%3Fs+rdfs%3AsubClassOf+%3FsuperClass.%0D%0A+filter+not+exists+{%3FsuperClass+a+owl%3ARestriction.}%0D%0A%0D%0A+%3Fs+rdfs%3AsubClassOf+%3Fr.%0D%0A+%3Fr+a+owl%3ARestriction.%0D%0A+%3Fr+owl%3AsomeValuesFrom+%3Fo.%0D%0A+%3Fr+owl%3AonProperty+%3Fp.%0D%0A%0D%0A+filter(%3Fo!%3D%3Frange)%0D%0A+MINUS+{%3Fo+rdfs%3AsubClassOf+%3Frange.}%0D%0A+MINUS+{%3Fo+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Frange].}%0D%0A+MINUS+{%3Fo+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Frange]].}%0D%0A+MINUS+{%3Fo+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Frange]]].}%0D%0A+MINUS+{%3Fo+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Frange]]]].}%0D%0A+MINUS+{%3Fo+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf%3Frange]]]]].}%0D%0A+MINUS+{%3Fo+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Frange]]]]]].}%0D%0A}), also [online](https://gist.github.com/KonradHoeffner/d9638183fc5fe00746aad137829b31fe)):
+And for the range ( [results](www.snik.eu/sparql?default-graph-uri=&query=select+distinct(%3Fs)+%3Frange%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta>%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fbb>%0D%0AFROM+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fob>%0D%0A%7B%0D%0A+graph+<http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta>+%7B%3Fp+a+owl%3AObjectProperty.}%0D%0A+%3Fp+rdfs%3Arange+%3Frange.%0D%0A%0D%0A+%3Fs+a+owl%3AClass.%0D%0A%0D%0A+%3Fs+rdfs%3AsubClassOf+%3FsuperClass.%0D%0A+filter+not+exists+%7B%3FsuperClass+a+owl%3ARestriction.}%0D%0A%0D%0A+%3Fs+rdfs%3AsubClassOf+%3Fr.%0D%0A+%3Fr+a+owl%3ARestriction.%0D%0A+%3Fr+owl%3AsomeValuesFrom+%3Fo.%0D%0A+%3Fr+owl%3AonProperty+%3Fp.%0D%0A%0D%0A+filter(%3Fo!%3D%3Frange)%0D%0A+MINUS+%7B%3Fo+rdfs%3AsubClassOf+%3Frange.}%0D%0A+MINUS+%7B%3Fo+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Frange].}%0D%0A+MINUS+%7B%3Fo+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Frange]].}%0D%0A+MINUS+%7B%3Fo+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Frange]]].}%0D%0A+MINUS+%7B%3Fo+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Frange]]]].}%0D%0A+MINUS+%7B%3Fo+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf%3Frange]]]]].}%0D%0A+MINUS+%7B%3Fo+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+[+rdfs%3AsubClassOf+%3Frange]]]]]].}%0D%0A}), also [online](https://gist.github.com/KonradHoeffner/d9638183fc5fe00746aad137829b31fe)):
 
 ```
 select distinct(?s) ?range

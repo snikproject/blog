@@ -1,7 +1,16 @@
-theme: jekyll-theme-cayman
-title: SNIK Ontology Dashboard
+baseurl:      ""
+paginate:     1
+
+author:
+  name:      Konrad Höffner 
+  url:       http://www.imise.uni-leipzig.de/Mitarbeiter/Konrad.Hoeffner.jsp 
+
+gems:
+  - jekyll-paginate
+
+markdown: kramdown
+title: SNIK Ontology
 name: SNIK Ontology
 description: Semantic Network of Hospital Information Management 
 permalink: pretty
-markdown: kramdown
 encoding: utf-8
