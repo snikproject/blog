@@ -120,14 +120,14 @@ meta:uses rdfs:range bb:BusinessStrategy.
 No, because this would mean (as always for domain, range is analogous) that all subjects of `meta:uses` are *both* instances of `meta:Function` *and* `bb:HospitalManagement`.
 Thus, the effective domain would become the intersection of them, which is equal to `bb:HospitalManagement` as it is a subclass of `meta:Function`.
 But we want to restrict `meta:uses` not in the general case but *only* when the subject is of type `bb:HospitalManagement`.
-We could solve this by creating a subpropertiy of `meta:uses`, let's say `bb:HospitalManagementUses`, and state domain and range for *that*, but we would need to add [1111 new properties](www.snik.eu/sparql?default-graph-uri=http%3A%2F%2Fwww.snik.eu%2Fontology&query=select+count(%3Fs)%0D%0A%7B%0D%0A+%3Fs+owl%3AonProperty+meta%3Auses.%0D%0A}) for `meta:uses` alone.
+We could solve this by creating a subproperty of `meta:uses`, let's say `bb:HospitalManagementUses`, and state domain and range for *that*, but we would need to add [1111 new properties](www.snik.eu/sparql?default-graph-uri=http%3A%2F%2Fwww.snik.eu%2Fontology&query=select+count(%3Fs)%0D%0A%7B%0D%0A+%3Fs+owl%3AonProperty+meta%3Auses.%0D%0A}) for `meta:uses` alone.
 This approach may be feasible on smaller ontologies, however; we investigate it for the upcoming [IT4IT](http://www.opengroup.org/IT4IT) ontology.
 
 Also, upon closer inspection, the book means "each hospital management uses *a* business strategy" (there is at least one), for which we need a different formalism:
 
 ### OWL Restrictions
 
-OWL restrictions are logical .
+OWL restrictions are logical statements about each instance of a class.
 
 |OWL restriction| Protegé Description of X|Logic|
 |---------------------|---------------------|------------|
