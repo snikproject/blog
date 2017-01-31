@@ -100,7 +100,7 @@ FROM <http://www.snik.eu/ontology/meta>
 So we now have a correct query that is unfortunately not very useful at the moment. Thus we [stash it away for the future](https://gist.github.com/KonradHoeffner/235ba45963f6d1ed87dc4554807fc73a) ([similarily for the range](https://gist.github.com/KonradHoeffner/01ac5faa4bf1abe572c480d7f7692924)) and look for a query that validates the data that is actually there right now.
 As the sub ontologies are full of information about those properties, where do we find it?
 
-The property `meta:uses`, domain `meta:Function` and range `meta:EntityType`.
+The property `meta:uses` has the domain `meta:Function` and the range `meta:EntityType`.
 The blue book states that the hospital management *uses* a business strategy, so the most intuitive way to represent that fact as an RDF triple is:
 
 `bb:HospitalManagement meta:uses bb:BusinessStrategy.`
