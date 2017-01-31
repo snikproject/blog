@@ -190,7 +190,10 @@ FROM <http://www.snik.eu/ontology/ob>
 } order by ?s
 ```
 
-The simultaneus presence of the SPARQL 1.1 features of property paths and negation seemed to triggered some bug and finally crashed our SPARQL endpoint. A server restart later, the query still gives nonsensical results, so I had to do a workaround:
+The simultaneus presence of the SPARQL 1.1 features of property paths and negation seemed to trigger some bug and finally crashed our SPARQL endpoint.
+A server restart later, the query still gave nonsensical results.
+Validating that this was actually a bug and not an incorrect query actually took the most time of the whole validation task, because it changed the result in very subtle ways and always disappeared when I removed any essential aspect inorder to produce a minimal working example for a bug report.
+In the end, I had to do a workaround:
 
  1. remove "filter not exists {?s rdfs:subClassOf+ ?domain.}", save result as TSV in "all"
  2. remove "filter not exists {} " but leave the inner triple patterns, save result as TSV in "correct"
