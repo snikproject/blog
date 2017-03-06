@@ -9,8 +9,8 @@ gems:
   - jekyll-paginate
 
 markdown: kramdown
-title: SNIK Ontology
-name: SNIK Ontology
-description: Semantic Network of Hospital Information Management 
+title: SNIK Technical Blog
+name: SNIK Technical Blog 
+description: Technical Blog for the SNIK Project about a Semantic Network of Hospital Information Management 
 permalink: pretty
 encoding: utf-8
