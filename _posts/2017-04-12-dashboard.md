@@ -8,7 +8,7 @@ use_sgvizler: true
 
 Types
     <div id="types"
-         data-sgvizler-endpoint="http://www.snik.eu/sparql"
+         data-sgvizler-endpoint="https://www.snik.eu/sparql"
          data-sgvizler-query="
 select replace(str(COALESCE(?subTop, 'none')),'http://www.snik.eu/ontology/meta/','meta:') count(?class)
 from <http://www.snik.eu/ontology>
@@ -17,12 +17,12 @@ from <http://www.snik.eu/ontology>
  OPTIONAL {?class meta:subTopClass ?subTop.}
 }"
          data-sgvizler-chart="google.visualization.PieChart"
-         style="width:600px; height:400px;"></div>
+         style="width:100%; height:400px;"></div>
 </td>
 <td>
 Ontology Size
 <div id="ontologies"
-       data-sgvizler-endpoint="http://www.snik.eu/sparql"
+       data-sgvizler-endpoint="https://www.snik.eu/sparql"
          data-sgvizler-query="
 select replace(str(?ontology),'http://www.snik.eu/ontology/','') count(?x)
 from <http://www.snik.eu/ontology>
@@ -30,15 +30,12 @@ from <http://www.snik.eu/ontology>
  ?ontology ov:defines ?x.
 }"
    data-sgvizler-chart="google.visualization.PieChart"
-   style="width:600px; height:400px;">
+   style="width:100%; height:400px;">
 </div>
-</td>
-</tr>
-<tr>
-<td>
+
 Class Hierarchy
 <div id="hierarchy"
-       data-sgvizler-endpoint="http://www.snik.eu/sparql"
+       data-sgvizler-endpoint="https://www.snik.eu/sparql"
        data-sgvizler-query="
 select replace(str(?sub),'http://www.snik.eu/ontology/','') replace(str(sample(?super)),'http://www.snik.eu/ontology/','') count(?sub)
 
@@ -57,8 +54,7 @@ OPTIONAL
 }"
        data-sgvizler-chart="google.visualization.TreeMap"
        style="width:800px; height:400px;"></div>
-</td>
-<td>
+
 Label Length
 <div id="labellength" data-sgvizler-endpoint="https://www.snik.eu/sparql"
  data-sgvizler-query="
@@ -69,8 +65,4 @@ from <http://www.snik.eu/ontology>
  ?class rdfs:label ?l.
 } group by strlen(?l) order by asc(strlen(?l))"
          data-sgvizler-chart="google.visualization.AreaChart"
-         style="width:800px; height:400px;">
-</div>
-</td>
-</tr>
-</table>
+         style="width:100%; height:400px;">
