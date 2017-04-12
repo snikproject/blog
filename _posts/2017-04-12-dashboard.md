@@ -8,7 +8,7 @@ use_sgvizler: true
 
 ## Types
 
-<div id="types"
+<div id="subtops"
          data-sgvizler-endpoint="https://www.snik.eu/sparql"
          data-sgvizler-query="
 select replace(str(COALESCE(?subTop, 'none')),'http://www.snik.eu/ontology/meta/','meta:') count(?class)
