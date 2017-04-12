@@ -22,6 +22,7 @@ from <http://www.snik.eu/ontology>
 </div>
 
 ## Ontology Size
+
 <div id="ontologies"
        data-sgvizler-endpoint="https://www.snik.eu/sparql"
          data-sgvizler-query="
@@ -35,6 +36,7 @@ from <http://www.snik.eu/ontology>
 </div>
 
 ## Class Hierarchy
+
 <div id="hierarchy"
        data-sgvizler-endpoint="https://www.snik.eu/sparql"
        data-sgvizler-query="
@@ -56,7 +58,8 @@ OPTIONAL
        data-sgvizler-chart="google.visualization.TreeMap"
        style="width:800px; height:400px;"></div>
 
-Label Length
+## Label Length
+
 <div id="labellength" data-sgvizler-endpoint="https://www.snik.eu/sparql"
  data-sgvizler-query="
 select strlen(?l) as ?label_length count(?l) as ?number_of_labels
