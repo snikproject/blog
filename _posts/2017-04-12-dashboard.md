@@ -6,8 +6,9 @@ date: 2017-04-12
 use_sgvizler: true
 ---
 
-Types
-    <div id="types"
+## Types
+
+<div id="types"
          data-sgvizler-endpoint="https://www.snik.eu/sparql"
          data-sgvizler-query="
 select replace(str(COALESCE(?subTop, 'none')),'http://www.snik.eu/ontology/meta/','meta:') count(?class)
@@ -17,10 +18,10 @@ from <http://www.snik.eu/ontology>
  OPTIONAL {?class meta:subTopClass ?subTop.}
 }"
          data-sgvizler-chart="google.visualization.PieChart"
-         style="width:100%; height:400px;"></div>
-</td>
-<td>
-Ontology Size
+         style="width:100%; height:400px;">
+</div>
+
+## Ontology Size
 <div id="ontologies"
        data-sgvizler-endpoint="https://www.snik.eu/sparql"
          data-sgvizler-query="
@@ -33,7 +34,7 @@ from <http://www.snik.eu/ontology>
    style="width:100%; height:400px;">
 </div>
 
-Class Hierarchy
+## Class Hierarchy
 <div id="hierarchy"
        data-sgvizler-endpoint="https://www.snik.eu/sparql"
        data-sgvizler-query="
@@ -66,3 +67,4 @@ from <http://www.snik.eu/ontology>
 } group by strlen(?l) order by asc(strlen(?l))"
          data-sgvizler-chart="google.visualization.AreaChart"
          style="width:100%; height:400px;">
+</div>
