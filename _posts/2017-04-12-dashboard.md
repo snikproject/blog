@@ -6,10 +6,7 @@ date: 2017-04-12
 use_sgvizler: true
 ---
 
-<table>
-<tr>
-<td>
-  Types
+Types
     <div id="types"
          data-sgvizler-endpoint="http://www.snik.eu/sparql"
          data-sgvizler-query="
