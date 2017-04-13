@@ -7,9 +7,9 @@ use_sgvizler: true
 ---
 
 ## Types
+Number of classes per type over all the subontologies. Hover over slices to see their absolute number.
 
 <div id="subtops"
-         data-sgvizler-endpoint="https://www.snik.eu/sparql"
          data-sgvizler-query="
 select replace(str(COALESCE(?subTop, 'none')),'http://www.snik.eu/ontology/meta/','meta:') count(?class)
 from <http://www.snik.eu/ontology>
@@ -24,7 +24,6 @@ from <http://www.snik.eu/ontology>
 ## Ontology Size
 
 <div id="ontologies"
-       data-sgvizler-endpoint="https://www.snik.eu/sparql"
          data-sgvizler-query="
 select replace(str(?ontology),'http://www.snik.eu/ontology/','') count(?x)
 from <http://www.snik.eu/ontology>
@@ -38,13 +37,13 @@ from <http://www.snik.eu/ontology>
 ## Class Hierarchy
 
 <div id="hierarchy"
-       data-sgvizler-endpoint="https://www.snik.eu/sparql"
        data-sgvizler-query="
 select replace(str(?sub),'http://www.snik.eu/ontology/','') replace(str(sample(?super)),'http://www.snik.eu/ontology/','') count(?sub)
 
 from <http://www.snik.eu/ontology/meta>
 from <http://www.snik.eu/ontology/ob>
 from <http://www.snik.eu/ontology/bb>
+from <http://www.snik.eu/ontology/he>
 {
 ?sub a owl:Class.
 # some classes are missing superclasses, they would confuse the algorithm
@@ -60,7 +59,7 @@ OPTIONAL
 
 ## Label Length
 
-<div id="labellength" data-sgvizler-endpoint="https://www.snik.eu/sparql"
+<div id="labellength"
  data-sgvizler-query="
 select strlen(?l) as ?label_length count(?l) as ?number_of_labels
 from <http://www.snik.eu/ontology>

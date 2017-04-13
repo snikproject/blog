@@ -11,6 +11,14 @@
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="https://mgskjaeveland.github.io/sgvizler/v/0.6/sgvizler.js"></script>
   <script>
+  sgvizler
+       .prefix("meta", "http://www.snik.eu/ontology/meta/")
+       .prefix("ob", "http://www.snik.eu/ontology/ob/")
+       .prefix("bb", "http://www.snik.eu/ontology/bb/")
+       .defaultEndpointURL("https://www.snik.eu/sparql")
+       .defaultChartFunction("sgvizler.visualization.PieChart")
+       .defaultChartHeight(400);
+
       $(document).ready(
           function (){ sgvizler.containerDrawAll(); }
       );
