@@ -22,6 +22,7 @@ from <http://www.snik.eu/ontology>
 </div>
 
 ## Ontology Size
+Number of classes per subontologies. Hover over slices to see their absolute number.
 
 <div id="ontologies"
          data-sgvizler-query="
@@ -35,7 +36,7 @@ from <http://www.snik.eu/ontology>
 </div>
 
 ## Class Hierarchy
-
+TreeMap of the class hierarchy. Larger rectangles have more subclasses. Click on a class to see it's subclasses .
 <div id="hierarchy"
        data-sgvizler-query="
 select replace(str(?sub),'http://www.snik.eu/ontology/','') replace(str(sample(?super)),'http://www.snik.eu/ontology/','') count(?sub)
@@ -45,19 +46,20 @@ from <http://www.snik.eu/ontology/ob>
 from <http://www.snik.eu/ontology/bb>
 from <http://www.snik.eu/ontology/he>
 {
-?sub a owl:Class.
-# some classes are missing superclasses, they would confuse the algorithm
-filter(bound(?super)||?sub=meta:Top)
-OPTIONAL
-{
-?sub rdfs:subClassOf ?super.
-?super a owl:Class.
-}
+  ?sub a owl:Class.
+  # must be connected to the top
+  filter exists {?sub rdfs:subClassOf* meta:Top.}
+ OPTIONAL
+ {
+  ?sub rdfs:subClassOf ?super.
+  ?super a owl:Class.
+ }
 }"
        data-sgvizler-chart="google.visualization.TreeMap"
        style="width:800px; height:400px;"></div>
 
 ## Label Length
+Number of labels of a certain length. Most common length is around 15 characters. Labels should normally be shorter than 25 characters to avoid overcrowding the visualization.
 
 <div id="labellength"
  data-sgvizler-query="
