@@ -26,60 +26,61 @@ Number of classes that have labels in German, English, both or none of them.
 
 <div id="subtops"
          data-sgvizler-query="
-select ?lang count(?class) as ?count
+select ?lang count(?class) as ?count ?g
 from <http://www.snik.eu/ontology>
 {
  {
- select ("both" as ?lang) ?class
+ select ('both' as ?lang) ?class ?g
  {
-  ?class a owl:Class; rdfs:label ?label1, ?label2.
-  filter((lang(?label1)="en") AND (lang(?label2)="de"))
+  graph ?g {?class a owl:Class; rdfs:label ?label1, ?label2.}
+  filter((lang(?label1)='en') AND (lang(?label2)='de'))
  }
  }
  UNION
  {
- select ("de" as ?lang) ?class
+ select ('de' as ?lang) ?class ?g
  {
-  ?class a owl:Class; rdfs:label ?label.
-  filter(lang(?label)="de").
+  graph ?g {?class a owl:Class; rdfs:label ?label.}
+  filter(lang(?label)='de').
   filter not exists
   {
    ?class a owl:Class; rdfs:label ?label2.
-   filter(lang(?label2)="en").
+   filter(lang(?label2)='en').
   }
  }
  }
  UNION
  {
- select ("en" as ?lang) ?class
+ select ('en' as ?lang) ?class ?g
  {
-  ?class a owl:Class; rdfs:label ?label.
-  filter(lang(?label)="en").
+  graph ?g { ?class a owl:Class; rdfs:label ?label.}
+  filter(lang(?label)='en').
   filter not exists
   {
    ?class a owl:Class; rdfs:label ?label2.
-   filter(lang(?label2)="de").
+   filter(lang(?label2)='de').
   }
  }
  }
  UNION
  {
- select ("neither" as ?lang) ?class
+ select ('neither' as ?lang) ?class ?g
  {
-  ?class a owl:Class.
+  graph ?g {?class a owl:Class.}
   filter not exists
   {
    ?class rdfs:label ?label.
-   filter(lang(?label)="de").
+   filter(lang(?label)='de').
   }
   filter not exists
   {
    ?class rdfs:label ?label.
-   filter(lang(?label)="en").
+   filter(lang(?label)='en').
   }
  }
  }
-} order by asc(?lang)"
+} order by asc(?lang)
+"
          data-sgvizler-chart="google.visualization.PieChart"
          style="width:100%; height:400px;">
 </div>
