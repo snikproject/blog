@@ -26,21 +26,21 @@ Number of classes that have labels in German, English, both or none of them.
 
 <div id="subtops"
          data-sgvizler-query="
-select ?lang count(?class) as ?count ?g
+select ?lang count(?class) as ?count
 from <http://www.snik.eu/ontology>
 {
  {
- select ('both' as ?lang) ?class ?g
+ select ('both' as ?lang) ?class
  {
-  graph ?g {?class a owl:Class; rdfs:label ?label1, ?label2.}
+  ?class a owl:Class; rdfs:label ?label1, ?label2.
   filter((lang(?label1)='en') AND (lang(?label2)='de'))
  }
  }
  UNION
  {
- select ('de' as ?lang) ?class ?g
+ select ('de' as ?lang) ?class
  {
-  graph ?g {?class a owl:Class; rdfs:label ?label.}
+  ?class a owl:Class; rdfs:label ?label.
   filter(lang(?label)='de').
   filter not exists
   {
@@ -51,9 +51,9 @@ from <http://www.snik.eu/ontology>
  }
  UNION
  {
- select ('en' as ?lang) ?class ?g
+ select ('en' as ?lang) ?class
  {
-  graph ?g { ?class a owl:Class; rdfs:label ?label.}
+  ?class a owl:Class; rdfs:label ?label.
   filter(lang(?label)='en').
   filter not exists
   {
@@ -64,9 +64,9 @@ from <http://www.snik.eu/ontology>
  }
  UNION
  {
- select ('neither' as ?lang) ?class ?g
+ select ('neither' as ?lang) ?class
  {
-  graph ?g {?class a owl:Class.}
+  ?class a owl:Class.
   filter not exists
   {
    ?class rdfs:label ?label.
