@@ -10,7 +10,8 @@
   {% if page.use_labellanguages %}
   <script type="text/javascript" src="_includes/labellanguages.js"></script>
   <script>
-  $(document).ready(function () {
+  // jquery not loaded at this stage
+  document.addEventListener("DOMContentLoaded",function (event) {
         document.getElementById('labellanguages').appendChild(diagramFragment());});
   </script>
   {% endif %}
