@@ -6,15 +6,13 @@
   <link rel="stylesheet" href="{{ site.baseurl }}/css/normalize.css">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="{{ site.baseurl }}/css/cayman.css">
+  <!-- post must include a div with id "labellanguages"-->
   {% if page.use_labellanguages %}
-  // page must include a div with id "labellanguages"
-  {% include ../_includes/labellanguages.js %}
-  $(document).ready(
-    function ()
-    {
-        document.getElementById('labellanguages').appendChild(diagramFragment());
-    }
-  );
+  <script type="text/javascript" src="../_includes/labellanguages.js"></script>
+  <script>
+  $(document).ready(function () {
+        document.getElementById('labellanguages').appendChild(diagramFragment());});
+  </script>
   {% endif %}
   {% if page.use_sgvizler %}
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
