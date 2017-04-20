@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="{{ site.baseurl }}/css/cayman.css">
   <!-- post must include a div with id "labellanguages"-->
   {% if page.use_labellanguages %}
-  <script type="text/javascript" src="_includes/labellanguages.js"></script>
+  {% include labellanguages.js %}
   <script>
   // jquery not loaded at this stage
   document.addEventListener("DOMContentLoaded",function (event) {
