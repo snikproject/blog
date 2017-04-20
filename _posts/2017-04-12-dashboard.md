@@ -3,6 +3,7 @@ layout: post
 title: Dashboard
 tags: [snik, ontology, label,length]
 date: 2017-04-12
+use_labellanguages: true
 use_sgvizler: true
 ---
 
@@ -24,66 +25,7 @@ from <http://www.snik.eu/ontology>
 ## Label Languages
 Number of classes that have labels in German, English, both or none of them.
 
-<div id="subtops"
-         data-sgvizler-query="
-select ?lang count(?class) as ?count
-from <http://www.snik.eu/ontology>
-{
- {
- select ('both' as ?lang) ?class
- {
-  ?class a owl:Class; rdfs:label ?label1, ?label2.
-  filter((lang(?label1)='en') AND (lang(?label2)='de'))
- }
- }
- UNION
- {
- select ('de' as ?lang) ?class
- {
-  ?class a owl:Class; rdfs:label ?label.
-  filter(lang(?label)='de').
-  filter not exists
-  {
-   ?class a owl:Class; rdfs:label ?label2.
-   filter(lang(?label2)='en').
-  }
- }
- }
- UNION
- {
- select ('en' as ?lang) ?class
- {
-  ?class a owl:Class; rdfs:label ?label.
-  filter(lang(?label)='en').
-  filter not exists
-  {
-   ?class a owl:Class; rdfs:label ?label2.
-   filter(lang(?label2)='de').
-  }
- }
- }
- UNION
- {
- select ('neither' as ?lang) ?class
- {
-  ?class a owl:Class.
-  filter not exists
-  {
-   ?class rdfs:label ?label.
-   filter(lang(?label)='de').
-  }
-  filter not exists
-  {
-   ?class rdfs:label ?label.
-   filter(lang(?label)='en').
-  }
- }
- }
-} order by asc(?lang)
-"
-         data-sgvizler-chart="google.visualization.PieChart"
-         style="width:100%; height:400px;">
-</div>
+<div id="labellanguages"></div>
 
 ## Ontology Size
 Number of classes per subontologies. Hover over slices to see their absolute number.

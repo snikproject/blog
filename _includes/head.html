@@ -6,25 +6,35 @@
   <link rel="stylesheet" href="{{ site.baseurl }}/css/normalize.css">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="{{ site.baseurl }}/css/cayman.css">
-{% if page.use_sgvizler %}
+  {% if page.use_labellanguages %}
+  // page must include a div with id "labellanguages"
+  {% include ../_includes/labellanguages.js %}
+  $(document).ready(
+    function ()
+    {
+        document.getElementById('labellanguages').appendChild(diagramFragment());
+    }
+  );
+  {% endif %}
+  {% if page.use_sgvizler %}
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="https://mgskjaeveland.github.io/sgvizler/v/0.6/sgvizler.js"></script>
   <script>
   sgvizler
-       .prefix("meta", "http://www.snik.eu/ontology/meta/")
-       .prefix("ob", "http://www.snik.eu/ontology/ob/")
-       .prefix("bb", "http://www.snik.eu/ontology/bb/")
-       .defaultEndpointURL("https://www.snik.eu/sparql")
-       .defaultChartFunction("sgvizler.visualization.PieChart")
-       .defaultChartHeight(400);
+  .prefix("meta", "http://www.snik.eu/ontology/meta/")
+  .prefix("ob", "http://www.snik.eu/ontology/ob/")
+  .prefix("bb", "http://www.snik.eu/ontology/bb/")
+  .defaultEndpointURL("https://www.snik.eu/sparql")
+  .defaultChartFunction("sgvizler.visualization.PieChart")
+  .defaultChartHeight(400);
 
-      $(document).ready(
-          function (){ sgvizler.containerDrawAll(); }
-      );
-</script>
- {% endif %}
+  $(document).ready(
+    function (){ sgvizler.containerDrawAll(); }
+  );
+  </script>
+  {% endif %}
   {% if page.use_math %}
-      {% include mathjax_support %}
+  {% include mathjax_support %}
   {% endif %}
 </head>
