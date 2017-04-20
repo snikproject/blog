@@ -8,8 +8,8 @@
   <link rel="stylesheet" href="{{ site.baseurl }}/css/cayman.css">
   <!-- post must include a div with id "labellanguages"-->
   {% if page.use_labellanguages %}
-  {% include labellanguages.js %}
   <script>
+  {% include labellanguages.js %}
   // jquery not loaded at this stage
   document.addEventListener("DOMContentLoaded",function (event) {
         document.getElementById('labellanguages').appendChild(diagramFragment());});

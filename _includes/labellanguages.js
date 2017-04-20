@@ -64,7 +64,7 @@ function diagramFragment()
   for(var i in prefixes)
   {
     var prefix = prefixes[i];
-    //console.log(languageQuery('http://www.snik.eu/ontology/'+prefixes[i]));
+    //console.log(languageQuery('http://www.snik.eu/ontology/'+prefix));
     div.innerHTML +=
       `<span style="float:left;"><h3>${prefix}</h3>
       <div
