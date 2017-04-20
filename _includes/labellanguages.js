@@ -69,7 +69,7 @@ function diagramFragment()
       `<span style="float:left;"><h3>${prefix}</h3>
       <div
       id="${prefix}"
-      data-sgvizler-endpoint="http://www.snik.eu/sparql"
+      data-sgvizler-endpoint="https://www.snik.eu/sparql"
       data-sgvizler-query="${languageQuery('http://www.snik.eu/ontology/'+prefix)}"
       data-sgvizler-chart="google.visualization.PieChart"
       style="width:400px;height:400px;"></div></span>`
