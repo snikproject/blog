@@ -30,12 +30,28 @@ Number of classes that have labels in German, English, both or none of them.
 ## Ontology Size (Classes)
 Number of classes per subontologies. Hover over slices to see their absolute number.
 
-<div id="ontologies"
+<div id="ontologysizeclass"
          data-sgvizler-query="
 select replace(str(?ontology),'http://www.snik.eu/ontology/','') count(?x)
 from <http://www.snik.eu/ontology>
 {
  ?ontology ov:defines ?x.
+ ?x a owl:Class.
+}"
+   data-sgvizler-chart="google.visualization.PieChart"
+   style="width:100%; height:400px;">
+</div>
+
+## Ontology Size (Properties)
+Number of classes per subontologies. Hover over slices to see their absolute number.
+
+<div id="ontologysizeproperty"
+         data-sgvizler-query="
+select replace(str(?ontology),'http://www.snik.eu/ontology/','') count(?x)
+from <http://www.snik.eu/ontology>
+{
+ ?ontology ov:defines ?x.
+ {?x a rdf:Property.} UNION {?x a owl:DataTypeProperty.} UNION {?x a owl:ObjectProperty.}
 }"
    data-sgvizler-chart="google.visualization.PieChart"
    style="width:100%; height:400px;">
@@ -44,17 +60,17 @@ from <http://www.snik.eu/ontology>
 ## Ontology Size (Triples)
 Number of triples per subontologies. Hover over slices to see their absolute number.
 
-  <div id="triples"
-           data-sgvizler-query="
-  select replace(str(?g), 'http://www.snik.eu/ontology/','') count(*)
-  from <http://www.snik.eu/ontology>
-  {
-   graph ?g {?s ?p ?o.}
-   filter(regex(str(?g),'http://www.snik.eu/ontology/'))
-  }"
-     data-sgvizler-chart="google.visualization.PieChart"
-     style="width:100%; height:400px;">
-  </div>
+<div id="ontologysizetriple"
+     data-sgvizler-query="
+select replace(str(?g), 'http://www.snik.eu/ontology/','') count( * )
+from <http://www.snik.eu/ontology>
+{
+ graph ?g {?s ?p ?o.}
+ filter(regex(str(?g),'http://www.snik.eu/ontology/'))
+}"
+   data-sgvizler-chart="google.visualization.PieChart"
+   style="width:100%; height:400px;">
+</div>
 
 ## Class Hierarchy
 TreeMap of the class hierarchy. Larger rectangles have more subclasses. Click on a class to see it's subclasses .
