@@ -33,6 +33,13 @@
   );
   </script>
   {% endif %}
+  {% if page.use_sgvizler_table %}
+<script>
+    sgvizler
+  .defaultChartFunction("sgvizler.visualization.Table")
+  .defaultChartWidth(1000);
+</script>
+  {% endif %}
   {% if page.use_math %}
   {% include mathjax_support %}
   {% endif %}
