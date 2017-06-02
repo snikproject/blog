@@ -62,7 +62,7 @@ For easier exploration, visualization and understanding, we want to group all ou
 <h4>Problem</h4>
 Some classes don't have a specified superclass and thus are not connected to the rest of the hierarchy.
 <h4>Solution</h4>
-Because nearly all have a subtop statement, we use this automatically to add a subClassOf statement to the graph <pre>http://www.snik.eu/ontology/virtual</pre> for classes that don't have one already.
+Because nearly all have a subtop statement, we use this automatically to add a subClassOf statement to the graph <code>http://www.snik.eu/ontology/virtual</code> for classes that don't have one already.
 As this create a very unbalanced tree, you can display those classes below and try to find a more specific superclass for them.
 
 
