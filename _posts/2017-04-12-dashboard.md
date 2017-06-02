@@ -5,6 +5,7 @@ tags: [snik, ontology, label,length]
 date: 2017-04-12
 use_labellanguages: true
 use_sgvizler: true
+use_sgvizler_chart: true
 ---
 
 ## Types
