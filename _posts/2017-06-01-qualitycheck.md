@@ -77,7 +77,7 @@ from <http://www.snik.eu/ontology/he>
 from <http://www.snik.eu/ontology/it>
 {
 ?class a owl:Class.
-filter not exists {?c rdfs:subClassOf [].}
+filter not exists {?class rdfs:subClassOf [].}
 OPTIONAL{?class meta:subTopClass ?subtop.}
 }
 ">
