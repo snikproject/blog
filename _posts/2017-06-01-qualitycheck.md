@@ -11,11 +11,11 @@ use_jquery_ui: true
 <div id="accordion">
 <h3>Multiple Subtops</h3>
 <div>
-#### Situation
+<h4>Situation</h4>
 There are three immediate subclasses of meta:Top ("subtops"): Function, Role and Entity Type.
-#### Problem
+<h4>Problem</h4>
 As they are disjoint, any subclass of more than one of them would be empty, which we assume to be an error and thus show here.
-#### Solution
+<h4>Solution</h4>
 Automatically generate offending classes below and manually remove all but one of them.
 
 <input type="button" id="sgvizler-button-subtop" value="List Classes with Multiple Subtops" />
@@ -33,9 +33,9 @@ filter(str(?type1)<str(?type2))
 </div>
 <h3>Accordion Section 2</h3>
 <div>
-#### Situation
-#### Problem
-#### Solution
+<h4>Situation</h4>
+<h4>Problem</h4>
+<h4>Solution</h4>
 
 <input type="button" id="sgvizler-button-subtop" value="List Classes with Multiple Subtops" />
 <div id="sgvizler-div-subtop"
