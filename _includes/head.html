@@ -45,11 +45,15 @@
   sgvizler
   .defaultChartFunction("sgvizler.visualization.Table")
   .defaultChartWidth(1000);
-$("div[id^='sgvizler-div-']").each(function()
-{
-  console.log(this.id.replace("-div-","-button-"));
-  this.addEventListener("click",function() {sgvizler.containDraw(this.id.replace("-div-","-button-"));},false);
-});
+
+  $(document).ready(function()
+  {
+    $("div[id^='sgvizler-div-']").each(function()
+    {
+      console.log(this.id.replace("-div-","-button-"));
+      this.addEventListener("click",function() {sgvizler.containDraw(this.id.replace("-div-","-button-"));},false);
+    });
+  });
   </script>
   {% endif %}
   {% if page.use_math %}

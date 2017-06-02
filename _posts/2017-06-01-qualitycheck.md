@@ -3,7 +3,6 @@ layout: post
 title: Quality Check
 tags: [snik, ontology, label,length]
 date: 2017-04-12
-use_labellanguages: true
 use_sgvizler: true
 use_sgvizler_table: true
 ---
