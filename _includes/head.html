@@ -45,6 +45,10 @@
   sgvizler
   .defaultChartFunction("sgvizler.visualization.Table")
   .defaultChartWidth(1000);
+$("div[id^='sgvizler-div-']").each(function()
+{
+  this.addEventListener("click",function() {sgvizler.containDraw(this.id.replace("-div-","-button-"));},false);
+});
   </script>
   {% endif %}
   {% if page.use_math %}

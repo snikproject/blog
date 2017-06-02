@@ -16,7 +16,8 @@ As they are disjoint, any subclass of more than one of them would be empty, whic
 ### Solution
 Automatically generate offending classes below and manually remove all but one of them.
 
-<div id="subtops"
+<input type="button" id="sgvizler-button-subtops">List Classes with Multiple Subtops</input>
+<div id="sgvizler-div-subtops"
          data-sgvizler-query="
 select ?class ?type1 ?type2
 from <http://www.snik.eu/ontology>
