@@ -16,7 +16,7 @@ There are three immediate subclasses of meta:Top ("subtops"): Function, Role and
 <h4>Problem</h4>
 As they are disjoint, any subclass of more than one of them would be empty, which we assume to be an error and thus show here.
 <h4>Solution</h4>
-Automatically generate offending classes below and manually remove all but one of them.
+Automatically generate offending classes below and manually remove all but one of the subtop statements for each of them.
 <br/>
 <input type="button" id="sgvizler-button-subtop" value="List Classes with Multiple Subtops" />
 <div id="sgvizler-div-subtop"
