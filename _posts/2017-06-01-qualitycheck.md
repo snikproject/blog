@@ -5,14 +5,16 @@ tags: [snik, ontology, label,length]
 date: 2017-04-12
 use_sgvizler: true
 use_sgvizler_table: true
+use_jquery_ui: true
 ---
 
-## Multiple Subtops
-### Situation
+<div id="accordion">
+### Multiple Subtops
+#### Situation
 There are three immediate subclasses of meta:Top ("subtops"): Function, Role and Entity Type.
-### Problem
+#### Problem
 As they are disjoint, any subclass of more than one of them would be empty, which we assume to be an error and thus show here.
-### Solution
+#### Solution
 Automatically generate offending classes below and manually remove all but one of them.
 
 <input type="button" id="sgvizler-button-subtop" value="List Classes with Multiple Subtops" />
@@ -26,4 +28,24 @@ filter(?type1!=?type2)
 filter(str(?type1)<str(?type2))
 }
 ">
+</div>
+
+### Accordion Section 2
+#### Situation
+#### Problem
+#### Solution
+
+<input type="button" id="sgvizler-button-subtop" value="List Classes with Multiple Subtops" />
+<div id="sgvizler-div-subtop"
+         data-sgvizler-query="
+select ?class ?type1 ?type2
+from <http://www.snik.eu/ontology>
+{
+?class meta:subTopClass ?type1, ?type2.
+filter(?type1!=?type2)
+filter(str(?type1)<str(?type2))
+}
+">
+</div>
+
 </div>
