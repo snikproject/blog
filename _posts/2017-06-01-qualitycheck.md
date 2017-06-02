@@ -65,8 +65,9 @@ Some classes don't have a specified superclass and thus are not connected to the
 Because nearly all have a subtop statement, we use this automatically to add a subClassOf statement to the graph <pre>http://www.snik.eu/ontology/virtual</pre> for classes that don't have one already.
 As this create a very unbalanced tree, you can display those classes below and try to find a more specific superclass for them.
 
+
 <input type="button" id="sgvizler-button-missingsuperclass" value="List Classes with Missing Superclass" />
-<div id="sgvizler-div-subtop"
+<div id="sgvizler-div-missingsuperclass"
          data-sgvizler-query="
 select ?class ?subtop
 from <http://www.snik.eu/ontology/ob>
