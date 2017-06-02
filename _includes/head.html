@@ -50,9 +50,7 @@
   {
     $("input[id^='sgvizler-button-']").each(function()
     {
-      console.log(this.id);
-      console.log(this.id.replace("-button-","-div-"));
-      this.addEventListener("click",function() {sgvizler.containDraw(this.id.replace("-button-","-div-"));},false);
+      this.addEventListener("click",function() {sgvizler.containerDraw(this.id.replace("-button-","-div-"));},false);
     });
   });
   </script>
