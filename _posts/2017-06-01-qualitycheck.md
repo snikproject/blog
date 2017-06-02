@@ -17,7 +17,7 @@ There are three immediate subclasses of meta:Top ("subtops"): Function, Role and
 As they are disjoint, any subclass of more than one of them would be empty, which we assume to be an error and thus show here.
 <h4>Solution</h4>
 Automatically generate offending classes below and manually remove all but one of them.
-
+<br/>
 <input type="button" id="sgvizler-button-subtop" value="List Classes with Multiple Subtops" />
 <div id="sgvizler-div-subtop"
          data-sgvizler-query="
@@ -41,7 +41,7 @@ Subclass cycles (A subclass of B ... subclass of A) collapse all members of the 
 <h4>Solution</h4>
 Find subclass cycles below and and manually remove at least one of them.
 Because of the limitiations of SPARQL 1.1 property paths, we cannot select the full cycle but only give all pairs of classes on a cycle.
-
+<br/>
 <input type="button" id="sgvizler-button-cycle" value="List Classes with Multiple Subtops" />
 <div id="sgvizler-div-cycle"
          data-sgvizler-query="
@@ -54,6 +54,35 @@ select distinct ?class ?class2
 ">
 </div>
 </div>
+
+<h3>Missing subClassOf</h3>
+<div>
+<h4>Situation</h4>
+For easier exploration, visualization and understanding, we want to group all our classes in a more or less balanced subclass tree.
+<h4>Problem</h4>
+Some classes don't have a specified superclass and thus are not connected to the rest of the hierarchy.
+<h4>Solution</h4>
+Because nearly all have a subtop statement, we use this automatically to add a subClassOf statement to the graph <pre>http://www.snik.eu/ontology/virtual</pre> for classes that don't have one already.
+As this create a very unbalanced tree, you can display those classes below and try to find a more specific superclass for them.
+
+<input type="button" id="sgvizler-button-missingsuperclass" value="List Classes with Missing Superclass" />
+<div id="sgvizler-div-subtop"
+         data-sgvizler-query="
+select ?class ?subtop
+from <http://www.snik.eu/ontology/ob>
+from <http://www.snik.eu/ontology/bb>
+from <http://www.snik.eu/ontology/ciox>
+from <http://www.snik.eu/ontology/he>
+from <http://www.snik.eu/ontology/it>
+{
+?class a owl:Class.
+filter not exists {?c rdfs:subClassOf [].}
+OPTIONAL{?class meta:subTopClass ?subtop.}
+}
+">
+</div>
+</div>
+
 
 
 </div>
