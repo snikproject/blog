@@ -47,6 +47,7 @@
   .defaultChartWidth(1000);
 $("div[id^='sgvizler-div-']").each(function()
 {
+  console.log(this.id.replace("-div-","-button-"));
   this.addEventListener("click",function() {sgvizler.containDraw(this.id.replace("-div-","-button-"));},false);
 });
   </script>
