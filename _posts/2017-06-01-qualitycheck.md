@@ -42,7 +42,7 @@ Subclass cycles (A subclass of B ... subclass of A) collapse all members of the 
 Find subclass cycles below and and manually remove at least one of them.
 Because of the limitiations of SPARQL 1.1 property paths, we cannot select the full cycle but only give all pairs of classes on a cycle.
 <br/>
-<input type="button" id="sgvizler-button-cycle" value="List Classes with Multiple Subtops" />
+<input type="button" id="sgvizler-button-cycle" value="List Classes on Subclass Cycles" />
 <div id="sgvizler-div-cycle"
          data-sgvizler-query="
 select distinct ?class ?class2
@@ -63,7 +63,7 @@ For easier exploration, visualization and understanding, we want to group all ou
 Some classes don't have a specified superclass and thus are not connected to the rest of the hierarchy.
 <h4>Solution</h4>
 Because nearly all have a subtop statement, we use this automatically to add a superclass statement to the graph <code>http://www.snik.eu/ontology/virtual</code> for classes that don't have one already.
-As this create a very unbalanced tree, you can display those classes below and try to find a more specific superclass for them.
+As this creates a very unbalanced tree, you can display those classes below and try to find a more specific superclass for them.
 <br/>
 <input type="button" id="sgvizler-button-missingsuperclass" value="List Classes with Missing Superclass" />
 <div id="sgvizler-div-missingsuperclass"
