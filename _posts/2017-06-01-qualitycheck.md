@@ -84,6 +84,47 @@ OPTIONAL{?class meta:subTopClass ?subtop.}
 </div>
 </div>
 
+<h3>Undefined Objects</h3>
+<div>
+<h4>Situation</h4>
+Relations between our classes are modelled using OWL restrictions, mostly <code>owl:someValuesFrom</code> and <code>owl:allValuesFrom</code>
+<h4>Problem</h4>
+<h4>Solution</h4>
 
+<input type="button" id="sgvizler-button-undefinedobject" value="List Classes with Undefined Restriction Object" />
+<div id="sgvizler-div-undefinedobject"
+         data-sgvizler-query="
+select distinct ?targetNode ?label ?range
+from <http://www.snik.eu/ontology/ob>
+from <http://www.snik.eu/ontology/bb>
+from <http://www.snik.eu/ontology/ciox>
+from <http://www.snik.eu/ontology/he>
+from <http://www.snik.eu/ontology/it>
+{
+ ?resource      a owl:Class.
+ filter not exists { ?targetNode    a owl:Class.}
+ {
+  ?resource     rdfs:subClassOf ?restriction.
+  ?restriction  a owl:Restriction;
+                owl:onProperty ?p.
+  {?restriction owl:someValuesFrom ?targetNode.} UNION {?restriction owl:allValuesFrom ?targetNode.}
+}
+">
+</div>
+</div>
+
+<h3>Accordion Section</h3>
+<div>
+<h4>Situation</h4>
+<h4>Problem</h4>
+<h4>Solution</h4>
+
+<input type="button" id="sgvizler-button-..." value="..." />
+<div id="sgvizler-div-..."
+         data-sgvizler-query="
+...
+">
+</div>
+</div>
 
 </div>
