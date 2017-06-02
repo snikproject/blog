@@ -124,6 +124,65 @@ from <http://www.snik.eu/ontology/it>
 </div>
 </div>
 
+<h3>Domain Violation</h3>
+<div>
+<h4>Situation</h4>
+Each SNIK property has a domain that defines allowed subjects.
+<h4>Problem</h4>
+Some classes are used as a subject for a triple without being a direct or transitive subclass of the defined domain of the property.
+<h4>Solution</h4>
+The offending triples should be removed or remodelled to conform to the range.
+<br/>
+<input type="button" id="sgvizler-button-domain" value="List Domain Violations" />
+<div id="sgvizler-div-domain"
+         data-sgvizler-query="
+select ?s ?p ?o ?domain
+FROM <http://www.snik.eu/ontology/meta>
+FROM <http://www.snik.eu/ontology/bb>
+FROM <http://www.snik.eu/ontology/ob>
+FROM <http://www.snik.eu/ontology/he>
+FROM <http://www.snik.eu/ontology/it>
+FROM <http://www.snik.eu/ontology/ciox>
+{
+ graph <http://www.snik.eu/ontology/meta> {?p rdfs:domain ?domain.}
+
+ ?s ?p ?o.
+ filter not exists {?s a/rdfs:subClassOf* ?domain.}
+}
+">
+</div>
+</div>
+
+<h3>Range Violation</h3>
+<div>
+<h4>Situation</h4>
+Each SNIK property has a range that defines allowed objects.
+<h4>Problem</h4>
+Some classes are used as an object for a triple  without being a direct or transitive subclass of the defined range of the property.
+<h4>Solution</h4>
+The offending triples should be removed or remodelled to conform to the range.
+<br/>
+<input type="button" id="sgvizler-button-range" value="List Range Violations" />
+<div id="sgvizler-div-range"
+         data-sgvizler-query="
+select ?s ?p ?o ?range
+FROM <http://www.snik.eu/ontology/meta>
+FROM <http://www.snik.eu/ontology/bb>
+FROM <http://www.snik.eu/ontology/ob>
+FROM <http://www.snik.eu/ontology/he>
+FROM <http://www.snik.eu/ontology/it>
+FROM <http://www.snik.eu/ontology/ciox>
+{
+ graph <http://www.snik.eu/ontology/meta> {?p rdfs:range ?range.}
+
+ ?s ?p ?o.
+ filter not exists {?o a/rdfs:subClassOf* ?range.}
+}
+">
+</div>
+</div>
+
+<!--
 <h3>Accordion Section</h3>
 <div>
 <h4>Situation</h4>
@@ -137,5 +196,6 @@ from <http://www.snik.eu/ontology/it>
 ">
 </div>
 </div>
+-->
 
 </div>
