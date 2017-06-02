@@ -64,8 +64,7 @@ Some classes don't have a specified superclass and thus are not connected to the
 <h4>Solution</h4>
 Because nearly all have a subtop statement, we use this automatically to add a subClassOf statement to the graph <code>http://www.snik.eu/ontology/virtual</code> for classes that don't have one already.
 As this create a very unbalanced tree, you can display those classes below and try to find a more specific superclass for them.
-
-
+<br/>
 <input type="button" id="sgvizler-button-missingsuperclass" value="List Classes with Missing Superclass" />
 <div id="sgvizler-div-missingsuperclass"
          data-sgvizler-query="
@@ -90,7 +89,7 @@ OPTIONAL{?class meta:subTopClass ?subtop.}
 Relations between our classes are modelled using OWL restrictions, mostly <code>owl:someValuesFrom</code> and <code>owl:allValuesFrom</code>
 <h4>Problem</h4>
 <h4>Solution</h4>
-
+<br/>
 <input type="button" id="sgvizler-button-undefinedobject" value="List Classes with Undefined Restriction Object" />
 <div id="sgvizler-div-undefinedobject"
          data-sgvizler-query="
@@ -118,7 +117,7 @@ from <http://www.snik.eu/ontology/it>
 <h4>Situation</h4>
 <h4>Problem</h4>
 <h4>Solution</h4>
-
+<br/>
 <input type="button" id="sgvizler-button-..." value="..." />
 <div id="sgvizler-div-..."
          data-sgvizler-query="
