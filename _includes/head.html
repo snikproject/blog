@@ -16,7 +16,7 @@
   </script>
   {% endif %}
   {% if page.use_sgvizler %}
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="https://mgskjaeveland.github.io/sgvizler/v/0.6/sgvizler.js"></script>
   <script>
@@ -29,6 +29,10 @@
   .prefix("ciox", "http://www.snik.eu/ontology/ciox/")
   .defaultEndpointURL("https://www.snik.eu/sparql");
   </script>
+  {% endif %}
+  {% if page.use_jquery_ui %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   {% endif %}
   {% if page.use_sgvizler_chart %}
   <script>
