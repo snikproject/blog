@@ -9,7 +9,7 @@ use_jquery_ui: true
 ---
 
 <div id="accordion">
-### Multiple Subtops
+<h3>Multiple Subtops</h3>
 <div>
 #### Situation
 There are three immediate subclasses of meta:Top ("subtops"): Function, Role and Entity Type.
@@ -31,7 +31,7 @@ filter(str(?type1)<str(?type2))
 ">
 </div>
 </div>
-### Accordion Section 2
+<h3>Accordion Section 2</h3>
 <div>
 #### Situation
 #### Problem
