@@ -18,8 +18,8 @@ As they are disjoint, any subclass of more than one of them would be empty, whic
 <h4>Solution</h4>
 Automatically generate offending classes below and manually remove all but one of the subtop statements for each of them.
 <br/>
-<input type="button" id="sgvizler-button-subtop" value="List Classes with Multiple Subtops" />
-<div id="sgvizler-div-subtop"
+<input type="button" id="sgvizler-button-subtop-multiple" value="List Classes with Multiple Subtops" />
+<div id="sgvizler-div-subtop-multiple"
          data-sgvizler-query="
 select ?class ?type1 ?type2
 from <http://www.snik.eu/ontology>
@@ -28,6 +28,39 @@ from <http://www.snik.eu/ontology>
 filter(?type1!=?type2)
 filter(str(?type1)<str(?type2))
 }
+">
+</div>
+</div>
+
+<h3>Inconsistent Subtop with Subclass</h3>
+<div>
+<h4>Situation</h4>
+In addition to direct subclass relations, we model the transitively implied subclass relation to a subtop using the meta:subtop relation.
+Other knowledge bases may handle this differently, for example DBpedia always explicitly defines all superclasses.
+<h4>Problem</h4>
+If A is subclass of B and A and B have different disjoint superclasses C and D, this implies that A is empty, similar to the multiple subtops problem.
+<h4>Solution</h4>
+Manually unify the subtops of the subclass-superclass pairs below.
+<br/>
+<input type="button" id="sgvizler-button-subtop-subclass" value="List Classes with Multiple Subtops" />
+<div id="sgvizler-div-subtop-subclass"
+         data-sgvizler-query="
+">
+</div>
+</div>
+
+<h3>SKOS Link to Different Subtop</h3>
+<div>
+<h4>Situation</h4>
+The different SNIK subontologies are linked mostly using <a href=":closeMatch">skos:closeMatch</a>, <a href=":narrowMatch">skos:narrowMatch</a> and <a href=":broadMatch">skos:broadMatch</a>, which which imply owl:equivalentClass, rdfs:subClassOf and the inverse of rdfs:subClassOf.
+<h4>Problem</h4>
+For the same reasons mentioned for multiple subtops and inconsistent subtop, we assume an error if the ends of a link have a different subtop.
+<h4>Solution</h4>
+Remove all interlinks between classes with different subtops.
+<br/>
+<input type="button" id="sgvizler-button-subtop-skos" value="List Classes with Multiple Subtops" />
+<div id="sgvizler-div-subtop-skos"
+         data-sgvizler-query="
 ">
 </div>
 </div>
