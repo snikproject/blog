@@ -61,6 +61,16 @@ Remove all interlinks between classes with different subtops.
 <input type="button" id="sgvizler-button-subtop-skos" value="List Classes with Multiple Subtops" />
 <div id="sgvizler-div-subtop-skos"
          data-sgvizler-query="
+select ?class1 ?type1 ?relation ?class2 ?type2
+from <http://www.snik.eu/ontology>
+{
+ owl:Class ^a ?class1,?class2.
+ ?class1 meta:subTopClass ?type1.
+ ?class2 meta:subTopClass ?type2.
+ filter(?type1!=?type2)
+ ?class1 ?relation ?class2.
+ filter(regex(str(?relation),'http://www.w3.org/2004/02/skos/core#'))
+}
 ">
 </div>
 </div>
