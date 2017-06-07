@@ -278,21 +278,55 @@ FROM <http://www.snik.eu/ontology>
 </div>
 </div>
 
-<!--
-<h3>Accordion Section</h3>
+<!-- ** workaround for Atom editor syntax highlighting problem -->
+
+<h3>Missing Definition</h3>
 <div>
 <h4>Situation</h4>
+Every class should have a definition from the book.
 <h4>Problem</h4>
+Some don't.
 <h4>Solution</h4>
+Try to find a definition in the source.
 <br/>
-<input type="button" id="sgvizler-button-..." value="..." />
-<div id="sgvizler-div-..."
+<input type="button" id="sgvizler-button-definition" value="List Classes with Missing Definition" />
+<div id="sgvizler-div-definition"
          data-sgvizler-query="
-...
+select ?class
+FROM <http://www.snik.eu/ontology>
+{
+ ?class a owl:Class.
+ OPTIONAL {?class skos:definition ?def.}
+ FILTER(!BOUND(?def) OR str(?def)='')
+}
 ">
 </div>
 </div>
--->
+
+<h3>Literals with Semicolons</h3>
+<div>
+<h4>Situation</h4>
+We use semicolons for multiple properties in our extraction tables to hold multiple values.
+<h4>Problem</h4>
+Semicolons are rarely used in the textbooks, especially for short strings and outside of definitions.
+Thus they hint at semicolons being used at the wrong place or at errors in the conversion script.
+<h4>Solution</h4>
+Generate all literals containing semicolons except those from definitions of more than 100 characters.
+<br/>
+<input type="button" id="sgvizler-button-semicolon" value="List Literals with Semicolons" />
+<div id="sgvizler-div-semicolon"
+         data-sgvizler-query="
+select ?class ?property ?literal
+FROM <http://www.snik.eu/ontology>
+{
+
+ ?class ?property ?literal.
+ filter(!(?property=skos:definition AND strlen(?literal)>100))
+ FILTER(regex(str(?literal),';'))
+}
+">
+</div>
+</div>
 
 <!--
 <h3>Accordion Section</h3>
