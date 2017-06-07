@@ -42,9 +42,18 @@ If A is subclass of B and A and B have different disjoint superclasses C and D, 
 <h4>Solution</h4>
 Manually unify the subtops of the subclass-superclass pairs below.
 <br/>
-<input type="button" id="sgvizler-button-subtop-subclass" value="List Classes with Multiple Subtops" />
+<input type="button" id="sgvizler-button-subtop-subclass" value="List Classes with Subtop Inconsistent with that of its Subclass" />
 <div id="sgvizler-div-subtop-subclass"
          data-sgvizler-query="
+select ?sub ?subtype ?super ?supertype
+from <http://www.snik.eu/ontology>
+{
+ owl:Class ^a ?sub,?super.
+ ?sub rdfs:subClassOf ?super.
+ ?sub meta:subTopClass ?subtype.
+ ?super meta:subTopClass ?supertype.
+ filter(?subtype!=?supertype)
+}
 ">
 </div>
 </div>
