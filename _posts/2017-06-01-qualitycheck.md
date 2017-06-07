@@ -234,6 +234,66 @@ FROM <http://www.snik.eu/ontology/ciox>
 </div>
 </div>
 
+<h3>Class URL Naming Convention Violations</h3>
+<div>
+<h4>Situation</h4>
+Class URLs should conform to UpperCamelCase.
+<h4>Problem</h4>
+Naming conventions weren't clearly set from the beginning and some pecularities are not widely known, for example abbreviations such as IbmMachine, not IBMMachine.
+<h4>Solution</h4>
+Manually correct offending class URLs.
+<br/>
+<input type="button" id="sgvizler-button-naming" value="List Class Naming Convention Violations" />
+<div id="sgvizler-div-naming"
+         data-sgvizler-query="
+select ?class
+FROM <http://www.snik.eu/ontology>
+{
+ ?class a owl:Class.
+ filter(!regex(str(?class),'([A-Z0-9][a-z0-9]+)+'))
+}
+">
+</div>
+</div>
+
+<h3>Property URL Naming Convention Violations</h3>
+<div>
+<h4>Situation</h4>
+Property URLs should conform to lowerCamelCase.
+<h4>Problem</h4>
+Naming conventions weren't clearly set from the beginning and some pecularities are not widely known, for example abbreviations such as updatesAtm, not updatesATM.
+<h4>Solution</h4>
+Manually correct offending property URLs.
+<br/>
+<input type="button" id="sgvizler-button-naming" value="List Property Naming Convention Violations" />
+<div id="sgvizler-div-naming"
+         data-sgvizler-query="
+select ?property
+FROM <http://www.snik.eu/ontology>
+{
+ {?property a owl:ObjectProperty.} UNION {?property a owl:DatatypeProperty.}
+ filter(!regex(str(?property),'^[a-z]+([A-Z][a-z0-9]+)*'))
+}
+">
+</div>
+</div>
+
+<!--
+<h3>Accordion Section</h3>
+<div>
+<h4>Situation</h4>
+<h4>Problem</h4>
+<h4>Solution</h4>
+<br/>
+<input type="button" id="sgvizler-button-..." value="..." />
+<div id="sgvizler-div-..."
+         data-sgvizler-query="
+...
+">
+</div>
+</div>
+-->
+
 <!--
 <h3>Accordion Section</h3>
 <div>
@@ -251,3 +311,5 @@ FROM <http://www.snik.eu/ontology/ciox>
 -->
 
 </div>
+
+Note: No table is shown when there are no quality issues for a certain criteria.
