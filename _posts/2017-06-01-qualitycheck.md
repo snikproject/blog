@@ -2,7 +2,7 @@
 layout: post
 title: Quality Check
 tags: [snik, ontology, label,length]
-date: 2017-04-12
+date: 2017-06-01
 use_sgvizler: true
 use_sgvizler_table: true
 use_jquery_ui: true
