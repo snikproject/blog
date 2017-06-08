@@ -327,6 +327,45 @@ FROM <http://www.snik.eu/ontology>
 ">
 </div>
 </div>
+<h3>Classes with too many subclasses</h3>
+<div>
+<h4>Situation</h4>
+The subclass hierarchy should ideally be a more or less balanced tree.
+<h4>Problem</h4>
+In practice, the hierarchy is too flat.
+<h4>Solution</h4>
+List all classes with more than 20 subclasses.
+<br/>
+<input type="button" id="sgvizler-button-imbalanced-count" value="List Classes with too many subclasses" />
+<div id="sgvizler-div-imbalanced-count"
+         data-sgvizler-query="
+select ?super count(?sub) as ?sub_count
+from <http://www.snik.eu/ontology>
+{
+ owl:Class ^a ?sub,?super.
+ ?sub rdfs:subClassOf ?super.
+} group by ?super having (count(?sub) > 20) order by desc(count(?sub))
+">
+</div>
+
+<input type="button" id="sgvizler-button-imbalanced-subclasses" value="List Subclasses of Classes with too many Subclasses" />
+<div id="sgvizler-div-imbalanced-subclasses"
+         data-sgvizler-query="
+select ?sub
+from <http://www.snik.eu/ontology>
+{
+ ?sub rdfs:subClassOf ?super
+{
+ select ?super
+{
+ owl:Class ^a ?sub,?super.
+ ?sub rdfs:subClassOf ?super.
+} group by ?super having (count(?sub) > 20)
+}
+}
+">
+</div>
+</div>
 
 <h3>No Restriction</h3>
 <div>
