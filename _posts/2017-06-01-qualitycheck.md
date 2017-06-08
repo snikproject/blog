@@ -328,6 +328,41 @@ FROM <http://www.snik.eu/ontology>
 </div>
 </div>
 
+<h3>No Restriction</h3>
+<div>
+<h4>Situation</h4>
+Classes are connected to other classes mostly by the subclass hierarchy and by restrictions.
+<h4>Problem</h4>
+Some classes are isolated from all others, limiting their use and preventing them from being connected to the vizualization graph.
+<h4>Solution</h4>
+List all classes that are not connected to other classes by restrictions.
+Because we already covered the hierarchy, we are not taking it into account here.
+Because there are over 1000 of those cases, we only list the first 100.
+They are not necessarily faulty but it may be worthy to investigate if they can be connected in some way.
+<br/>
+<input type="button" id="sgvizler-button-isolated" value="List Unrestricted Classes" />
+<div id="sgvizler-div-isolated"
+         data-sgvizler-query="
+select ?class
+
+FROM <http://www.snik.eu/ontology/bb>
+FROM <http://www.snik.eu/ontology/ob>
+FROM <http://www.snik.eu/ontology/ciox>
+FROM <http://www.snik.eu/ontology/he>
+FROM <http://www.snik.eu/ontology/it>
+{
+ ?class a owl:Class.
+ filter not exists
+ {
+  ?class2 a owl:Class.
+  {?class rdfs:subClassOf [a owl:Restriction; ?p ?class2].} UNION
+  {?class2 rdfs:subClassOf [a owl:Restriction; ?p ?class].}
+ }
+}
+">
+</div>
+</div>
+
 <!--
 <h3>Accordion Section</h3>
 <div>
