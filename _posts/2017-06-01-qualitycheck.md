@@ -420,4 +420,4 @@ FROM <http://www.snik.eu/ontology/it>
 
 </div>
 
-Note: No table is shown when there are no quality issues for a certain criteria.
+Note: No table is shown when there is an empty result.
