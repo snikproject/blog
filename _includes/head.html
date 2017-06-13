@@ -19,6 +19,9 @@
         document.getElementById('labellanguages').appendChild(diagramFragment());});
   </script>
   {% endif %}
+  {% if page.include_ontologymatching %}
+  {% include ontologymatching %}
+  {% endif %}
   {% if page.use_sgvizler %}
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>

@@ -1,0 +1,125 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/treant-js/1.0/Treant.css" type="text/css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/treant-js/1.0/Treant.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script>
+ 
+<style>
+ .box {
+  padding: 2px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #ffffff;
+  border: 1px solid #000;
+  width: 200px;
+  font-family: Tahoma;
+  font-size: 12px;
+ }
+ .node-name { font-weight: bold;}
+ </style>
+ <script>
+ simple_chart_config = {
+  chart: {
+   container: "#pathcomparison-bb-ceo",
+   node: {HTMLclass: 'box'}
+  },
+  nodeStructure: {
+   text: { name: "meta:Top", title: "Top" },
+   link: {href: "http://www.snik.eu/ontology/meta/Top"},
+   children: [
+    {
+     text: { name: "meta:Role", title: "Role" },
+     link: {href: "http://www.snik.eu/ontology/meta/Role"},
+     children: [
+      {
+       text: { name: "bb:HisStakeHolder", title: "HIS Stakeholder"},
+       link: {href: "http://www.snik.eu/ontology/bb/HisStakeHolder"},
+       children: [
+        {
+         text: { name: "bb:HospitalStaff", title: "Hospital Staff"},
+         link: {href: "http://www.snik.eu/ontology/bb/HospitalStaff"},
+         children: [
+          {
+           text: { name: "bb:Ceo", title: "CEO"},
+           link: {href: "http://www.snik.eu/ontology/bb/Ceo"},
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     text: { name: "meta:EntityType", title: "Entity Type"},
+     link: {href: "http://www.snik.eu/ontology/meta/EntityType"},
+     children: [
+      {
+       text: { name: "bb:AdministrativeEntityType", title: "Administrative Entity Type"},
+       link: {href: "http://www.snik.eu/ontology/bb/AdministrativeEntityType"},
+       children: [
+        {
+         text: { name: "bb:Resource", title: "Resource"},
+         link: {href: "http://www.snik.eu/ontology/bb/Resource"},
+         children: [
+          {
+           text: { name: "bb:HumanResource", title: "Human Resource"},
+           link: {href: "http://www.snik.eu/ontology/bb/HumanResource"},
+           children: [
+            {
+             text: { name: "bb:HospitalStaff", title: "HIS "},
+             link: {href: "http://www.snik.eu/ontology/ciox/HISStakeholder"},
+             children: [
+              {
+               text: { name: "ciox:ChiefExecutiveOfficer", title: "CEO"},
+               link: {href: "http://www.snik.eu/ontology/ciox/ChiefExecutiveOfficer"},
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ };
+
+ simple_chart_config2 = {
+  chart: {
+   container: "#pathcomparison-ciox-ceo",
+   node: {HTMLclass: 'box'}
+  },
+  nodeStructure: {
+   text: { name: "meta:Top", title: "Top" },
+   link: {href: "http://www.snik.eu/ontology/meta/Top"},
+   children: [
+    {
+     text: { name: "meta:Role", title: "Role" },
+     link: {href: "http://www.snik.eu/ontology/meta/Role"},
+     children: [
+      {
+       text: { name: "ciox:HISStakeholder", title: "HIS Stakeholder"},
+       link: {href: "http://www.snik.eu/ontology/ciox/HISStakeholder"},
+       children: [
+        {
+         text: { name: "ciox:ChiefExecutiveOfficer", title: "CEO"},
+         link: {href: "http://www.snik.eu/ontology/ciox/ChiefExecutiveOfficer"},
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ };
+
+document.addEventListener("DOMContentLoaded", function(event) 
+{
+ var my_chart = new Treant(simple_chart_config);
+ var my_chart2 = new Treant(simple_chart_config2);
+}
+);
+
+ </script>
