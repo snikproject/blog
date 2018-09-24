@@ -73,6 +73,21 @@ from <http://www.snik.eu/ontology>
    style="width:100%; height:400px;">
 </div>
 
+<div id="ontologysizelink"
+     data-sgvizler-query="
+select replace(str(?p), 'http://www.w3.org/2004/02/skos/core#','') count( * )
+from <http://www.snik.eu/ontology>
+{
+ ?s ?p ?o.
+ filter(regex(str(?p),'http://www.w3.org/2004/02/skos/core#'))
+ filter(str(?p)!='http://www.w3.org/2004/02/skos/core#definition')
+ filter(str(?p)!='http://www.w3.org/2004/02/skos/core#altLabel')
+}"
+   data-sgvizler-chart="google.visualization.PieChart"
+   style="width:100%; height:400px;">
+</div>
+
+
 ## Class Hierarchy
 TreeMap of the class hierarchy. Larger rectangles have more subclasses. Click on a class to see it's subclasses .
 <div id="hierarchy"
