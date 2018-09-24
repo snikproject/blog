@@ -73,6 +73,10 @@ from <http://www.snik.eu/ontology>
    style="width:100%; height:400px;">
 </div>
 
+
+## Ontology Size (Interlinks)
+Number of interlinks per link type. Hover over slices to see their absolute number.
+
 <div id="ontologysizelink"
      data-sgvizler-query="
 select replace(str(?p), 'http://www.w3.org/2004/02/skos/core#','') count( * )
