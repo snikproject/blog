@@ -1,11 +1,10 @@
-baseurl:      ""
 paginate:     1
 
 author:
   name:      Konrad Höffner 
   url:       http://www.imise.uni-leipzig.de/Mitarbeiter/Konrad.Hoeffner.jsp 
 
-gems:
+plugins:
   - jekyll-paginate
 
 markdown: kramdown
