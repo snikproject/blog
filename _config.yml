@@ -9,6 +9,7 @@ gems:
   - jekyll-paginate
 
 markdown: kramdown
+theme: jekyll-theme-cayman
 title: SNIK Technical Blog
 name: SNIK Technical Blog 
 description: Technical Blog for the SNIK Project about a Semantic Network of Hospital Information Management 
