@@ -416,7 +416,7 @@ List all triples with URIs that are neither HTTP URIs nor blanknodes.
          data-sgvizler-query="
 select ?x
 {
-{?x ?p ?o.} UNION {?s ?x ?o}. filter(!regex(str(?x),"http://")&&!regex(str(?x),"nodeID")).
+{?x ?p ?o.} UNION {?s ?x ?o}. filter(!regex(str(?x),'http://')&&!regex(str(?x),'nodeID')).
 }
 ">
 </div>
