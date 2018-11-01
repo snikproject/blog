@@ -402,6 +402,26 @@ FROM <http://www.snik.eu/ontology/it>
 </div>
 </div>
 
+<h3>Non-HTTP URI</h3>
+<div>
+<h4>Situation</h4>
+Our URIs begin with http://...
+<h4>Problem</h4>
+Tools like the OntoWiki sometimes fail to expand a prefix and thus create URIs that have an incorrect prefix.
+<h4>Solution</h4>
+List all triples with URIs that are neither HTTP URIs nor blanknodes.
+<br/>
+<input type="button" id="sgvizler-button-isolated" value="List Non-HTTP URIs" />
+<div id="sgvizler-div-isolated"
+         data-sgvizler-query="
+select ?x
+{
+{?x ?p ?o.} UNION {?s ?x ?o}. filter(!regex(str(?x),"http://")&&!regex(str(?x),"nodeID")).
+}
+">
+</div>
+</div>
+
 <!--
 <h3>Accordion Section</h3>
 <div>
