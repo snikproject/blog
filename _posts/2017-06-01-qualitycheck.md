@@ -411,7 +411,7 @@ Tools like the OntoWiki sometimes fail to expand a prefix and thus create URIs t
 <h4>Solution</h4>
 List all triples with URIs that are neither HTTP URIs nor blanknodes.
 <br/>
-<input type="button" id="sgvizler-button-isolated" value="List Non-HTTP URIs" />
+<input type="button" id="sgvizler-button-non-http" value="List Non-HTTP URIs" />
 <div id="sgvizler-div-isolated"
          data-sgvizler-query="
 select ?x
