@@ -60,13 +60,14 @@ function diagramFragment()
 {
   var frag = document.createDocumentFragment();
   var div = frag.appendChild(document.createElement("div"));
+  div.style = "display:flex;";
   const prefixes = ["meta","bb","ob","he"];
   for(var i in prefixes)
   {
     var prefix = prefixes[i];
     //console.log(languageQuery('http://www.snik.eu/ontology/'+prefix));
     div.innerHTML +=
-      `<span style="float:left;"><h3>${prefix}</h3>
+      `<span><h3>${prefix}</h3>
       <div
       id="${prefix}"
       data-sgvizler-endpoint="https://www.snik.eu/sparql"
