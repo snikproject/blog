@@ -22,7 +22,7 @@ Automatically generate offending classes below and manually remove all but one o
 <div id="sgvizler-div-subtop-multiple"
          data-sgvizler-query="
 select ?class ?type1 ?type2
-from <http://www.snik.eu/ontology>
+FROM <http://www.snik.eu/ontology>
 {
 ?class meta:subTopClass ?type1, ?type2.
 filter(?type1!=?type2)
@@ -46,7 +46,7 @@ Manually unify the subtops of the subclass-superclass pairs below.
 <div id="sgvizler-div-subtop-subclass"
          data-sgvizler-query="
 select ?sub ?subtype ?super ?supertype
-from <http://www.snik.eu/ontology>
+FROM <http://www.snik.eu/ontology>
 {
  owl:Class ^a ?sub,?super.
  ?sub rdfs:subClassOf ?super.
@@ -71,7 +71,7 @@ Remove all interlinks between classes with different subtops.
 <div id="sgvizler-div-subtop-skos"
          data-sgvizler-query="
 select ?class1 ?type1 ?relation ?class2 ?type2
-from <http://www.snik.eu/ontology>
+FROM <http://www.snik.eu/ontology>
 {
  owl:Class ^a ?class1,?class2.
  ?class1 meta:subTopClass ?type1.
@@ -98,6 +98,7 @@ Because of the limitiations of SPARQL 1.1 property paths, we cannot select the f
 <div id="sgvizler-div-cycle"
          data-sgvizler-query="
 select distinct ?class ?class2
+FROM <http://www.snik.eu/ontology>
 {
  owl:Class ^a ?class,?class2.
  ?class rdfs:subClassOf+ ?class2.
@@ -121,11 +122,7 @@ As this creates a very unbalanced tree, you can display those classes below and 
 <div id="sgvizler-div-missingsuperclass"
          data-sgvizler-query="
 select ?class ?subtop
-from <http://www.snik.eu/ontology/ob>
-from <http://www.snik.eu/ontology/bb>
-from <http://www.snik.eu/ontology/ciox>
-from <http://www.snik.eu/ontology/he>
-from <http://www.snik.eu/ontology/it>
+FROM <http://www.snik.eu/ontology>
 {
 ?class a owl:Class.
 filter not exists {?class rdfs:subClassOf [].}
@@ -149,12 +146,7 @@ The responsible extractors for the respective subontologies need to add statemen
 <div id="sgvizler-div-undefinedobject"
          data-sgvizler-query="
 select distinct ?targetNode
-from <http://www.snik.eu/ontology/meta>
-from <http://www.snik.eu/ontology/ob>
-from <http://www.snik.eu/ontology/bb>
-from <http://www.snik.eu/ontology/ciox>
-from <http://www.snik.eu/ontology/he>
-from <http://www.snik.eu/ontology/it>
+FROM <http://www.snik.eu/ontology>
 {
  ?resource      a owl:Class.
  filter not exists { ?targetNode    a owl:Class.}
@@ -188,18 +180,13 @@ The offending triples should be removed or remodelled to conform to the range.
 <input type="button" id="sgvizler-button-domain" value="List Domain Violations" />
 <div id="sgvizler-div-domain"
          data-sgvizler-query="
-select ?s ?p ?o ?domain
-FROM <http://www.snik.eu/ontology/meta>
-FROM <http://www.snik.eu/ontology/bb>
-FROM <http://www.snik.eu/ontology/ob>
-FROM <http://www.snik.eu/ontology/he>
-FROM <http://www.snik.eu/ontology/it>
-FROM <http://www.snik.eu/ontology/ciox>
+select *
+FROM <http://www.snik.eu/ontology>
 {
- graph <http://www.snik.eu/ontology/meta> {?p rdfs:domain ?domain.}
-
- ?s ?p ?o.
- filter not exists {?s a/rdfs:subClassOf* ?domain.}
+ ?p rdfs:domain ?domain.
+ filter(?domain!=meta:Top) 
+ ?s ?p ?o.                                                                                                                                                                                                         
+ minus {?s a|rdfs:subClassOf*|meta:subTopClass ?domain.}
 }
 ">
 </div>
@@ -217,18 +204,13 @@ The offending triples should be removed or remodelled to conform to the range.
 <input type="button" id="sgvizler-button-range" value="List Range Violations" />
 <div id="sgvizler-div-range"
          data-sgvizler-query="
-select ?s ?p ?o ?range
-FROM <http://www.snik.eu/ontology/meta>
-FROM <http://www.snik.eu/ontology/bb>
-FROM <http://www.snik.eu/ontology/ob>
-FROM <http://www.snik.eu/ontology/he>
-FROM <http://www.snik.eu/ontology/it>
-FROM <http://www.snik.eu/ontology/ciox>
+select *
+FROM <http://www.snik.eu/ontology>                                                                                                                                                                                 
 {
- graph <http://www.snik.eu/ontology/meta> {?p rdfs:range ?range.}
-
+ ?p rdfs:range ?range.
+ filter(!strstarts(str(?range),'http://www.w3.org/2001/XMLSchema#'))
  ?s ?p ?o.
- filter not exists {?o a/rdfs:subClassOf* ?range.}
+ minus {?o a?/rdfs:subClassOf*|meta:subTopClass ?range.}
 }
 ">
 </div>
@@ -340,7 +322,7 @@ List all classes with more than 20 subclasses.
 <div id="sgvizler-div-imbalanced-count"
          data-sgvizler-query="
 select ?super count(?sub) as ?sub_count
-from <http://www.snik.eu/ontology>
+FROM <http://www.snik.eu/ontology>
 {
  owl:Class ^a ?sub,?super.
  ?sub rdfs:subClassOf ?super.
@@ -352,7 +334,7 @@ from <http://www.snik.eu/ontology>
 <div id="sgvizler-div-imbalanced-subclasses"
          data-sgvizler-query="
 select ?sub
-from <http://www.snik.eu/ontology>
+FROM <http://www.snik.eu/ontology>
 {
  ?sub rdfs:subClassOf ?super
 {
@@ -383,12 +365,7 @@ They are not necessarily faulty but it may be worthy to investigate if they can 
 <div id="sgvizler-div-isolated"
          data-sgvizler-query="
 select ?class
-
-FROM <http://www.snik.eu/ontology/bb>
-FROM <http://www.snik.eu/ontology/ob>
-FROM <http://www.snik.eu/ontology/ciox>
-FROM <http://www.snik.eu/ontology/he>
-FROM <http://www.snik.eu/ontology/it>
+FROM <http://www.snik.eu/ontology>
 {
  ?class a owl:Class.
  filter not exists
@@ -415,6 +392,7 @@ List all triples with URIs that are neither HTTP URIs nor blanknodes.
 <div id="sgvizler-div-non-http"
          data-sgvizler-query="
 select ?x
+FROM <http://www.snik.eu/ontology>
 {
 {?x ?p ?o.} UNION {?s ?x ?o}. filter(!regex(str(?x),'http://')&&!regex(str(?x),'nodeID')).
 }
