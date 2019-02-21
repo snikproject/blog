@@ -1,9 +1,9 @@
 ---
 layout: post
-use_math: true 
 title: What is the OWL profile of SNIK? (Draft)
+use_math: true 
 tags: [snik, ontology, owl, complexity]
-date: 2017-01-13
+date: 2019-02-21
 ---
 
 # Abstract
