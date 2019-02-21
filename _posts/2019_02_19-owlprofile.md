@@ -86,8 +86,71 @@ However, checking all the other datatypes is getting a bit tedious, so we try to
 
 [Validata: RDF Validator using Shape Expressions](https://www.w3.org/2015/03/ShExValidata/): I don't know how ShEx expressions work but I tried the schema and data checks, which both accept `:x :y "x"^^xsd:integer`, so I didn't look further into Validata. 
 
-https://www.slideshare.net/jpcik/rdf-data-validation-2017-shacl
+So I created a [Stack Overflow post](https://stackoverflow.com/questions/54807315/how-to-validate-rdf-literals-using-sparql) which didn't get answers so I created this SPARQL query:
 
+```
+select *
+{
+?s ?p ?o.
+filter(!isIRI(?o)).
+bind(datatype(?o) as ?type)
+
+
+filter
+(
+
+(?type=xsd:boolean&&xsd:boolean(?o)!=?o)
+
+|| (?type=xsd:date&&xsd:date(?o)!=?o)
+
+|| (?type=xsd:integer&&xsd:int(?o)!=?o)
+
+|| ((?type=xsd:positiveInteger) && (xsd:int(?o)!=?o||xsd:int(?o)<1))
+
+|| ((?type=xsd:nonNegativeInteger) && (xsd:int(?o)!=?o||xsd:int(?o)<0))
+
+)
+
+}
+```
+
+Which is tested with this Turtle file:
+
+```
+@base <> .
+@prefix :<>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+
+# wrong
+
+:x :y "kind of?"^^xsd:boolean.
+
+:x :y "whenever"^^xsd:date.
+:x :y "2000-01-01"^^xsd:dateTime.
+:x :y "2000-01-01-06:00"^^xsd:date.
+
+:x :y "01012000"^^xsd:date.
+
+:x :y "x"^^xsd:integer.
+:x :y "-1"^^xsd:nonNegativeInteger.
+:x :y "0"^^xsd:positiveInteger.
+
+# correct
+
+:x :y "2000-01-01"^^xsd:date.
+:x :y "2000-01-01-06:00"^^xsd:dateTime.
+
+:x :y "true"^^xsd:boolean.
+:x :y "false"^^xsd:boolean.
+
+:x :y "-5"^^xsd:integer.
+:x :y "0"^^xsd:nonNegativeInteger.
+:x :y "1"^^xsd:positiveInteger.                                                                                                                                                                                    
+```
+
+Which gets detected correctly except for the datetime-date switch.
+
+Running this query on the SNIK graph group `<http://www.snik.eu/ontology>` returns no results, so the literals seem to be OK.
 
 3.
 
@@ -101,4 +164,7 @@ https://www.slideshare.net/jpcik/rdf-data-validation-2017-shacl
 
 # Further Reading
 
-[RDF Graph Validation Using Rule-Based Reasoning](http://www.semantic-web-journal.net/content/rdf-graph-validation-using-rule-based-reasoning)
+I didn't have time yet for those but may delve into them later, if necessary.
+
+* [RDF Graph Validation Using Rule-Based Reasoning](http://www.semantic-web-journal.net/content/rdf-graph-validation-using-rule-based-reasoning)
+* https://www.slideshare.net/jpcik/rdf-data-validation-2017-shacl
