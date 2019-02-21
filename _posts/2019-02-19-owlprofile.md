@@ -7,7 +7,7 @@ date: 2019-02-21
 ---
 
 # Abstract
-We compared the statements of SNIK against the restrictions of the different OWL and OWL 2 profiles.
+We compared the statements of SNIK against the restrictions of the different OWL and OWL 2 profiles to find out of it conforms to one of them.
 
 # Problem
 The planned continuation of the SNIK project contains a reasoner module, mostly to check ontology consistency and class consistency.
@@ -33,7 +33,8 @@ An OWL 2 ontology O must satisfy the following conditions to be an OWL 2 DL onto
 
 ### Analysis
 
-1. We have ontology URIs for each of the meta model and all the subontologies. The central statment here is "IRIs from the reserved vocabulary MUST NOT be used as an ontology IRI or a version IRI of an OWL 2 DL ontology." which is no problem for us, because our ontology URIs are of the form http://www.snik.eu/{meta,ob,bb,ciox,...}.
+#### 1. Reserved Vocabulary
+We have ontology URIs for each of the meta model and all the subontologies. The central statment here is "IRIs from the reserved vocabulary MUST NOT be used as an ontology IRI or a version IRI of an OWL 2 DL ontology." which is no problem for us, because our ontology URIs are of the form http://www.snik.eu/{meta,ob,bb,ciox,...}.
 
 The reserved vocabulary is:
 
@@ -52,7 +53,9 @@ xsd:positiveInteger 	xsd:short 	xsd:string 	xsd:token 	xsd:unsignedByte
 xsd:unsignedInt 	xsd:unsignedLong 	xsd:unsignedShort 	
 ```
 
-2. SNIK conforms to the [restrictions on datatypes from section 5.2](https://www.w3.org/TR/owl2-syntax/#Datatypes) because we just use existing datatypes from the XML schema:
+#### 2. Datatype and Literal Restrictions
+##### 2.1 Datatype Restrictions 
+SNIK conforms to the [restrictions on datatypes from section 5.2](https://www.w3.org/TR/owl2-syntax/#Datatypes) because we just use existing datatypes from the XML schema:
 
 **SPARQL Query**
 
@@ -77,6 +80,8 @@ select distinct datatype(?z) count(*) from <http://www.snik.eu/ontology>
 | http://www.w3.org/2001/XMLSchema#date               | 6         |
 | http://www.w3.org/2001/XMLSchema#boolean            | 2052      |
 ```
+
+##### 2.2 Literal Restrictions 
 
 The key part of [Section 5.7 on Literals](https://www.w3.org/TR/owl2-syntax/#Literals) seems to be:
 "The lexical form of each literal occurring in an OWL 2 DL ontology MUST belong to the lexical space of the literal's datatype. [...] Example: "1"^^xsd:integer is a literal that represents the integer 1."
@@ -152,8 +157,25 @@ Which gets detected correctly except for the datetime-date switch.
 
 Running this query on the SNIK graph group `<http://www.snik.eu/ontology>` returns no results, so the literals seem to be OK.
 
-3.
+#### 3. IRI Restrictions
+"Each entity in O MUST have an IRI satisfying the restrictions on the usage of the reserved vocabulary from Sections [5.1](https://www.w3.org/TR/owl2-syntax/#Classes)–5.6."
 
+We don't use any reserved vocabulary IRIs, so we should be able to skip this.
+
+#### 4. Typing Constraints
+
+##### Property typing constraints:
+* If an object property with an IRI I occurs in some axiom in Ax, then I is declared in Ax as an object property.
+* If a data property with an IRI I occurs in some axiom in Ax, then I is declared in Ax as a data property.
+* If an annotation property with an IRI I occurs in some axiom in Ax, then I is declared in Ax as an annotation property.
+* No IRI I is declared in Ax as being of more than one type of property; that is, no I is declared in Ax to be both object and data, object and annotation, or data and annotation property. 
+
+
+
+#####   Class/datatype typing constraints:
+* If a class with an IRI I occurs in some axiom in Ax, then I is declared in Ax as a class.
+* If a datatype with an IRI I occurs in some axiom in Ax, then I is declared in Ax as a datatype.
+* No IRI I is declared in ax to be both a class and a datatype. 
 
 
 ### Protégé OWL 2 Profile Checker
