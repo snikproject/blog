@@ -52,7 +52,46 @@ xsd:positiveInteger 	xsd:short 	xsd:string 	xsd:token 	xsd:unsignedByte
 xsd:unsignedInt 	xsd:unsignedLong 	xsd:unsignedShort 	
 ```
 
-2.
+2. SNIK conforms to the [restrictions on datatypes from section 5.2](https://www.w3.org/TR/owl2-syntax/#Datatypes) because we just use existing datatypes from the XML schema:
+
+**SPARQL Query**
+
+```
+select distinct datatype(?z) count(*) from <http://www.snik.eu/ontology>
+{
+  ?x ?y ?z.
+  filter (datatype(?z) != '')
+} group by datatype(?z)
+```
+
+**Result**
+
+```
+| callret-0                                           | callret-1 |
+|-----------------------------------------------------|-----------|
+| http://www.w3.org/2001/XMLSchema#string             | 11650     |
+| http://www.w3.org/2001/XMLSchema#nonNegativeInteger | 4         |
+| http://www.w3.org/2001/XMLSchema#integer            | 7237      |
+| http://www.w3.org/2001/XMLSchema#dateTime           | 1         |
+| http://www.w3.org/2001/XMLSchema#positiveInteger    | 2130      |
+| http://www.w3.org/2001/XMLSchema#date               | 6         |
+| http://www.w3.org/2001/XMLSchema#boolean            | 2052      |
+```
+
+The key part of [Section 5.7 on Literals](https://www.w3.org/TR/owl2-syntax/#Literals) seems to be:
+"The lexical form of each literal occurring in an OWL 2 DL ontology MUST belong to the lexical space of the literal's datatype. [...] Example: "1"^^xsd:integer is a literal that represents the integer 1."
+
+We don't need to check xsd:string literals as every string should be a valid xsd:string.
+However, checking all the other datatypes is getting a bit tedious, so we try to find existing tools for the job.
+
+[Validata: RDF Validator using Shape Expressions](https://www.w3.org/2015/03/ShExValidata/): I don't know how ShEx expressions work but I tried the schema and data checks, which both accept `:x :y "x"^^xsd:integer`, so I didn't look further into Validata. 
+
+https://www.slideshare.net/jpcik/rdf-data-validation-2017-shacl
+
+
+3.
+
+
 
 ### Protégé OWL 2 Profile Checker
 
@@ -60,4 +99,6 @@ xsd:unsignedInt 	xsd:unsignedLong 	xsd:unsignedShort
 
 * [OWL 2 Profiles: An Introduction to Lightweight Ontology Languages by Markus Krötzsch](https://www.youtube.com/watch?v=ybfidE6zhts)
 
+# Further Reading
 
+[RDF Graph Validation Using Rule-Based Reasoning](http://www.semantic-web-journal.net/content/rdf-graph-validation-using-rule-based-reasoning)
