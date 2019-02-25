@@ -401,6 +401,42 @@ FROM <http://www.snik.eu/ontology>
 </div>
 
 
+<h3>Undefined Properties</h3>
+<div>
+<h4>Situation</h4>
+Some URIs are used in the property position of a triple but are neither declared as owl:ObjectProperty, nor as owl:DataTypeProperty.
+<h4>Problem</h4>
+This violates the [typing constraints of OWL 2 DL](https://www.w3.org/TR/owl2-syntax/#Typing_Constraints_of_OWL_2_DL).
+<h4>Solution</h4>
+List all URIs are used in the property position of a triple but are neither declared as owl:ObjectProperty, nor as owl:DataTypeProperty.
+Exclude those defined in vocabularies like RDF, RDFS, OWL and so on.
+<br/>
+<input type="button" id="sgvizler-button-undefined-property" value="Undefined Properties" />
+<div id="sgvizler-div-undefined-property"
+         data-sgvizler-query="
+select distinct(?p) from <http://www.snik.eu/ontology>
+{
+ ?x ?p ?y.
+ filter(!(strstarts(str(?p),"http://www.w3.org/1999/02/22-rdf-syntax-ns#")))
+ filter(!(strstarts(str(?p),"http://www.w3.org/2000/01/rdf-schema#")))
+ filter(!(strstarts(str(?p),"http://www.w3.org/2002/07/owl#")))
+ filter(!(strstarts(str(?p),"http://purl.org/dc/terms/")))
+ filter(!(strstarts(str(?p),"http://purl.org/ontology/bibo/")))
+ filter(!(strstarts(str(?p),"http://purl.org/vocab/vann/")))
+ filter(!(strstarts(str(?p),"http://open.vocab.org/terms/")))
+ filter(!(strstarts(str(?p),"http://schema.org/")))
+ filter(!(strstarts(str(?p),"http://www.w3.org/2004/02/skos/core#")))
+ filter(!(strstarts(str(?p),"http://xmlns.com/foaf/0.1/")))
+ filter(!(strstarts(str(?p),"http://rdfs.org/sioc/ns#")))
+
+
+ MINUS {?p a owl:DataTypeProperty. filter(!isIRI(?y))}
+ MINUS {?p a owl:ObjectProperty. filter(isIRI(?y))}
+} order by ?p
+">
+</div>
+</div>
+
 <!--
 <h3>Accordion Section</h3>
 <div>

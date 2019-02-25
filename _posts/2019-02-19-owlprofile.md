@@ -170,6 +170,68 @@ We don't use any reserved vocabulary IRIs, so we should be able to skip this.
 * If an annotation property with an IRI I occurs in some axiom in Ax, then I is declared in Ax as an annotation property.
 * No IRI I is declared in Ax as being of more than one type of property; that is, no I is declared in Ax to be both object and data, object and annotation, or data and annotation property. 
 
+I interpret this to include imported vocabularies like rdf and rdfs, because otherwise we couldn't use rdf:type and other object properties.
+For our own properties, this is a great candidate for our quality checker with the following query:
+
+```
+select distinct(?p) from <http://www.snik.eu/ontology>
+{
+ ?x ?p ?y.
+ filter(!(strstarts(str(?p),"http://www.w3.org/1999/02/22-rdf-syntax-ns#")))
+ filter(!(strstarts(str(?p),"http://www.w3.org/2000/01/rdf-schema#")))
+ filter(!(strstarts(str(?p),"http://www.w3.org/2002/07/owl#")))
+ filter(!(strstarts(str(?p),"http://purl.org/dc/terms/")))
+ filter(!(strstarts(str(?p),"http://purl.org/ontology/bibo/")))
+ filter(!(strstarts(str(?p),"http://purl.org/vocab/vann/")))
+ filter(!(strstarts(str(?p),"http://open.vocab.org/terms/")))
+ filter(!(strstarts(str(?p),"http://schema.org/")))
+ filter(!(strstarts(str(?p),"http://www.w3.org/2004/02/skos/core#")))
+ filter(!(strstarts(str(?p),"http://xmlns.com/foaf/0.1/")))
+ filter(!(strstarts(str(?p),"http://rdfs.org/sioc/ns#")))
+
+ MINUS {?p a owl:DataTypeProperty. filter(!isIRI(?y))}
+ MINUS {?p a owl:ObjectProperty. filter(isIRI(?y))}
+} order by ?p
+```
+
+With the following results:
+
+```
+http://www.snik.eu/ontology/bb/Chapter
+http://www.snik.eu/ontology/bb/ConceptDomain
+http://www.snik.eu/ontology/bb/ID
+http://www.snik.eu/ontology/bb/TripelPage
+http://www.snik.eu/ontology/bb/TripelRowNr
+http://www.snik.eu/ontology/bb/page
+http://www.snik.eu/ontology/ciox/approves
+http://www.snik.eu/ontology/he/chapter
+http://www.snik.eu/ontology/he/page
+http://www.snik.eu/ontology/it4it/Chapter
+http://www.snik.eu/ontology/it4it/MainFunctions
+http://www.snik.eu/ontology/it4it/OntologyDomain
+http://www.snik.eu/ontology/it4it/OntologyQuestionTypes
+http://www.snik.eu/ontology/it4it/OntologyUse
+http://www.snik.eu/ontology/it4it/OntologyUser
+http://www.snik.eu/ontology/it4it/Purpose
+http://www.snik.eu/ontology/it4it/page
+http://www.snik.eu/ontology/meta/DefinitionDEPage
+http://www.snik.eu/ontology/meta/associatedWith
+http://www.snik.eu/ontology/meta/consolidated
+http://www.snik.eu/ontology/meta/isDecomposed
+http://www.snik.eu/ontology/meta/isMasterFor
+http://www.snik.eu/ontology/meta/isResponsibleForRole
+http://www.snik.eu/ontology/meta/subClassOf
+http://www.snik.eu/ontology/meta/typicalFeature
+http://www.snik.eu/ontology/ob/Chapter
+http://www.snik.eu/ontology/ob/ConceptDomain
+http://www.snik.eu/ontology/ob/ID
+http://www.snik.eu/ontology/ob/TripelPage
+http://www.snik.eu/ontology/ob/TripelRowNr
+http://www.snik.eu/ontology/ob/page
+```
+
+However those aren't showstoppers: most of them are wrongly used properties and can either be removed or replaced. For example,  meta:subClassOf should be rdfs:subClassOf and meta:associatedWith should be meta:isAssociatedWith.
+Others, like meta:associatedWith and meta:consolidated are missing a definition.
 
 
 #####   Class/datatype typing constraints:
