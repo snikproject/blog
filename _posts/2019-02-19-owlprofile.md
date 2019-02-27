@@ -1,13 +1,13 @@
 ---
 layout: post
-title: What is the OWL profile of SNIK? (Draft)
-use_math: true 
+title: What is the OWL profile of SNIK?
+use_math: false 
 tags: [snik, ontology, owl, complexity]
 date: 2019-02-21
 ---
 
 # Abstract
-We compared the statements of SNIK against the restrictions of the different OWL and OWL 2 profiles to find out of it conforms to one of them.
+We compared the statements of SNIK against the restrictions of the different OWL and OWL 2 profiles to find out of it conforms to one of them and found out it conforms to at least OWL 2 DL barring a few errors.
 
 # Problem
 The planned continuation of the SNIK project contains a reasoner module, mostly to check ontology consistency and class consistency.
@@ -91,7 +91,7 @@ However, checking all the other datatypes is getting a bit tedious, so we try to
 
 [Validata: RDF Validator using Shape Expressions](https://www.w3.org/2015/03/ShExValidata/): I don't know how ShEx expressions work but I tried the schema and data checks, which both accept `:x :y "x"^^xsd:integer`, so I didn't look further into Validata. 
 
-So I created a [Stack Overflow post](https://stackoverflow.com/questions/54807315/how-to-validate-rdf-literals-using-sparql) which didn't get answers so I created this SPARQL query:
+So I created a [Stack Overflow post](https://stackoverflow.com/questions/54807315/how-to-validate-rdf-literals-using-sparql) which got the answers that validation is implementation specific and not completely done by Virtuoso, so I created this SPARQL query:
 
 ```
 select *
@@ -164,14 +164,14 @@ We don't use any reserved vocabulary IRIs, so we should be able to skip this.
 
 #### 4. Typing Constraints
 
-##### Property typing constraints:
+##### 4.1 Property typing constraints:
+I interpret this to include imported vocabularies like rdf and rdfs, because otherwise we couldn't use rdf:type and other object properties.
+
+For our own properties, this is a great candidate for our quality checker with the following query:
+###### Object and Data Properties
 * If an object property with an IRI I occurs in some axiom in Ax, then I is declared in Ax as an object property.
 * If a data property with an IRI I occurs in some axiom in Ax, then I is declared in Ax as a data property.
-* If an annotation property with an IRI I occurs in some axiom in Ax, then I is declared in Ax as an annotation property.
-* No IRI I is declared in Ax as being of more than one type of property; that is, no I is declared in Ax to be both object and data, object and annotation, or data and annotation property. 
 
-I interpret this to include imported vocabularies like rdf and rdfs, because otherwise we couldn't use rdf:type and other object properties.
-For our own properties, this is a great candidate for our quality checker with the following query:
 
 ```
 select distinct(?p) from <http://www.snik.eu/ontology>
@@ -230,25 +230,82 @@ http://www.snik.eu/ontology/ob/TripelRowNr
 http://www.snik.eu/ontology/ob/page
 ```
 
-However those aren't showstoppers: most of them are wrongly used properties and can either be removed or replaced. For example,  meta:subClassOf should be rdfs:subClassOf and meta:associatedWith should be meta:isAssociatedWith.
-Others, like meta:associatedWith and meta:consolidated are missing a definition.
+However those aren't showstoppers: most of them are wrongly used properties and can either be removed or replaced. For example, meta:subClassOf should be rdfs:subClassOf and meta:associatedWith should be meta:isAssociatedWith.
+Others, like meta:consolidated are missing a definition.
+The meta information properties like ...:ID, ...:TripelPage and ...:page need to be discussed, whether they should stay in their current form, be remodeled or removed.
 
+###### Annotation Properties
+* If an annotation property with an IRI I occurs in some axiom in Ax, then I is declared in Ax as an annotation property.
 
-#####   Class/datatype typing constraints:
+Annotations and axioms will be reworked, so we investigating those later.
+
+###### Multiply Defined Property
+* No IRI I is declared in Ax as being of more than one type of property; that is, no I is declared in Ax to be both object and data, object and annotation, or data and annotation property. 
+
+We add this to the quality checker with the following SPARQL query:
+
+```
+select *
+{
+ {?x a owl:DatatypeProperty,owl:ObjectProperty.} UNION
+ {?x a owl:ObjectProperty,owl:AnnotationProperty.} UNION
+ {?x a owl:AnnotationProperty,owl:DatatypeProperty.}
+}
+```
+
+Which has the single result of http://www.snik.eu/ontology/it4it/ID, which belongs to the properties to be reworked anyways.
+
+##### 4.2 Class/datatype typing constraints:
+
 * If a class with an IRI I occurs in some axiom in Ax, then I is declared in Ax as a class.
+
+We add this to the quality checker with the following SPARQL query:
+
+```
+select distinct(?cl)
+{
+ ?ax a owl:Axiom.
+ ?ax ?p ?cl.
+ filter(isIRI(?cl)).
+ filter(strStarts(str(?cl),"http://www.snik.eu/ontology/")).
+ MINUS
+ {
+  ?cl a owl:Class.
+ }
+}
+```
+
 * If a datatype with an IRI I occurs in some axiom in Ax, then I is declared in Ax as a datatype.
-* No IRI I is declared in ax to be both a class and a datatype. 
+* No IRI I is declared in ax to be both a class and a datatype.
 
+We skip the last two, because SNIK does not contain any custom datatypes.
 
-### Protégé OWL 2 Profile Checker
+#### 5. DatatypeRestrictions
+We don't have any instance of owl:DatatypeRestriction: `select count(distinct(?dr)) {?dr a owl:DatatypeRestriction.}` returns 0.
 
-# Sources and Further Information
+#### 6. Global Restriction
+> O MUST satisfy the global restriction from [Section 11](https://www.w3.org/TR/owl2-syntax/#Global_Restrictions_on_Axioms_in_OWL_2_DL). 
 
-* [OWL 2 Profiles: An Introduction to Lightweight Ontology Languages by Markus Krötzsch](https://www.youtube.com/watch?v=ybfidE6zhts)
+#### 7. Imports
+> Each O' directly imported into O MUST satisfy all of these restrictions as well.
 
-# Further Reading
+The SPARQL query `select * {?x owl:imports ?y.}` shows that we only have two import statements:
+```
+http://www.snik.eu/ontology/he 	http://www.w3.org/2000/01/rdf-schema#
+http://www.snik.eu/ontology/bb 	http://www.w3.org/2000/01/rdf-schema#
+```
 
-I didn't have time yet for those but may delve into them later, if necessary.
+Besides RDFS we also use, but don't explicitly import, the vocabularies of RDF, OWL, SKOS, XSD, FOAF, VANN, DC, but I assume they are also in OWL 2 DL.
+
+# Conclusion
+There are a few errors that prevent SNIK from being in OWL 2 DL, we should prioritize those so that we can use OWL 2 DL reasoners in the follow-up SNIK project.
+When this is done and it is deemed necessary by the SNIK reasoner component developers, we will investigate the original question of the OWL 2 profile of SNIK.
+
+# Related Links 
+
+I found those while researching the topic, they may be helpful for further research.
 
 * [RDF Graph Validation Using Rule-Based Reasoning](http://www.semantic-web-journal.net/content/rdf-graph-validation-using-rule-based-reasoning)
 * https://www.slideshare.net/jpcik/rdf-data-validation-2017-shacl
+* [OWL 2 Profiles: An Introduction to Lightweight Ontology Languages by Markus Krötzsch](https://www.youtube.com/watch?v=ybfidE6zhts)
+* [OWL: Yet to arrive on the Web of Data?](http://www.aidanhogan.com/docs/owlld_ldow12.pdf) by Glimm et al..
