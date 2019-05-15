@@ -87,7 +87,7 @@ FROM <http://www.snik.eu/ontology>
 <h3>Subclass Cycles</h3>
 <div>
 <h4>Situation</h4>
-Classes are sets of invidivuals and can be subclasses (subsets) of other classes.
+Classes are sets of individuals and can be subclasses (subsets) of other classes.
 <h4>Problem</h4>
 Subclass cycles (A subclass of B ... subclass of A) collapse all members of the cycle to the same set, which is assumed to be unintentional.
 <h4>Solution</h4>
