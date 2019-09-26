@@ -175,7 +175,7 @@ Each SNIK property has a domain that defines allowed subjects.
 <h4>Problem</h4>
 Some classes are used as a subject for a triple without being a direct or transitive subclass of the defined domain of the property.
 <h4>Solution</h4>
-The offending triples should be removed or remodelled to conform to the range.
+The offending triples should be removed or remodelled to conform to the domain.
 <br/>
 <input type="button" id="sgvizler-button-domain" value="List Domain Violations" />
 <div id="sgvizler-div-domain"
@@ -187,7 +187,7 @@ FROM <http://www.snik.eu/ontology>
  filter(?domain!=meta:Top) 
  ?s ?p ?o.                                                                                                                                                                                                         
  minus {?s a|rdfs:subClassOf*|meta:subTopClass ?domain.}
-}
+} order by ?p ?s
 ">
 </div>
 </div>
@@ -211,7 +211,7 @@ FROM <http://www.snik.eu/ontology>
  filter(!strstarts(str(?range),'http://www.w3.org/2001/XMLSchema#'))
  ?s ?p ?o.
  minus {?o a?/rdfs:subClassOf*|meta:subTopClass ?range.}
-}
+} order by ?p ?s
 ">
 </div>
 </div>
