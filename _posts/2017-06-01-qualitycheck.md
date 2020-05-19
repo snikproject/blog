@@ -58,6 +58,29 @@ FROM <http://www.snik.eu/ontology>
 </div>
 </div>
 
+<h3>subClassOf and component</h3>
+<div>
+<h4>Situation</h4>
+In addition to the subclass relation, we also have the similar but different component relations.
+<h4>Problem</h4>
+If A is subclass of B and A is also a component of B (or vice versa in the other direction), this seems syntactically wrong.
+<h4>Solution</h4>
+Manually decide for one of the relations. Problem: Sometimes there is no alternative superclass so more thought is needed.
+<br/>
+<input type="button" id="sgvizler-button-subclassof-component" value="List Class pairs connected via both superclass and component relations" />
+<div id="sgvizler-div-subclassof-component"
+         data-sgvizler-query="
+select ?sub ?super
+FROM <http://www.snik.eu/ontology>
+{
+ owl:Class ^a ?sub,?super.
+ ?sub rdfs:subClassOf ?super.
+ ?sub meta:roleComponent|meta:functionComponent|meta:entityTypeComponent|^meta:roleComponent|^meta:functionComponent|^meta:entityTypeComponent ?super.
+}
+">
+</div>
+</div>
+
 <h3>SKOS Link to Different Subtop</h3>
 <div>
 <h4>Situation</h4>
