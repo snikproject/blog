@@ -65,16 +65,17 @@ In addition to the subclass relation, we also have the similar but different com
 <h4>Problem</h4>
 If A is subclass of B and A is also a component of B (or vice versa in the other direction), this seems syntactically wrong.
 <h4>Solution</h4>
-Manually decide for one of the relations. Problem: Sometimes there is no alternative superclass so more thought is needed.
+Manually decide for one of the relations. If a component relation is chosen and the supercount is only 1, a new superclass needs to be specified.
 <br/>
 <input type="button" id="sgvizler-button-subclassof-component" value="List Class pairs connected via both superclass and component relations" />
 <div id="sgvizler-div-subclassof-component"
          data-sgvizler-query="
-select ?sub ?super
+select ?sub ?super COUNT(DISTINCT(?duper)) as ?supercount
 FROM <http://www.snik.eu/ontology>
 {
  owl:Class ^a ?sub,?super.
  ?sub rdfs:subClassOf ?super.
+ ?sub rdfs:subClassOf ?duper.
  ?sub meta:roleComponent|meta:functionComponent|meta:entityTypeComponent|^meta:roleComponent|^meta:functionComponent|^meta:entityTypeComponent ?super.
 }
 ">
