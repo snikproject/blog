@@ -82,6 +82,32 @@ FROM <http://www.snik.eu/ontology>
 </div>
 </div>
 
+
+<h3>redundant superclass</h3>
+<div>
+<h4>Situation</h4>
+The subClassOf relation is transitive.
+<h4>Problem</h4>
+If A is subClassOf B and B is subClassOf C then any explicit triple of A subClassOf C is redundant.
+<h4>Solution</h4>
+Delete the explicit triple A subClassOf C.
+<br/>
+<input type="button" id="sgvizler-button-redundant-superclass" value="List redundant subClassOf statements" />
+<div id="sgvizler-div-redundant-superclass"
+         data-sgvizler-query="
+select ?A ?B ?C
+FROM <http://www.snik.eu/ontology>
+{
+ owl:Class ^a ?A,?B,?C.
+ FILTER(?A!=?B&&?B!=?C&&?A!=?C)
+ ?A rdfs:subClassOf+ ?B.
+ ?B rdfs:subClassOf ?C.
+ ?A rdfs:subClassOf ?C.
+}
+">
+</div>
+</div>
+
 <h3>SKOS Link to Different Subtop</h3>
 <div>
 <h4>Situation</h4>
