@@ -95,7 +95,7 @@ Delete the explicit triple A subClassOf C.
 <input type="button" id="sgvizler-button-redundant-superclass" value="List redundant subClassOf statements" />
 <div id="sgvizler-div-redundant-superclass"
          data-sgvizler-query="
-select ?A ?B ?C
+SELECT DISTINCT ?A ?B ?C
 FROM <http://www.snik.eu/ontology>
 {
  owl:Class ^a ?A,?B,?C.
