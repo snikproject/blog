@@ -158,6 +158,28 @@ FROM <http://www.snik.eu/ontology>
 </div>
 </div>
 
+<h3>Missing label</h3>
+<div>
+<h4>Situation</h4>
+All classes should have a label.
+<h4>Problem</h4>
+Some classes don't have a specified label.
+<h4>Solution</h4>
+Show classes with missing label and manually add labels.
+<br/>
+<input type="button" id="sgvizler-button-missinglabel" value="List Classes with Missing Label" />
+<div id="sgvizler-div-missingsuperclass"
+         data-sgvizler-query="
+select ?class ?subtop
+FROM <http://www.snik.eu/ontology>
+{
+?class a owl:Class.
+MINUS {?class rdfs:label []}
+}
+">
+</div>
+</div>
+
 <h3>Missing superclass</h3>
 <div>
 <h4>Situation</h4>
