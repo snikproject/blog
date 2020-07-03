@@ -168,9 +168,9 @@ Some classes don't have a specified label.
 Show classes with missing label and manually add labels.
 <br/>
 <input type="button" id="sgvizler-button-missinglabel" value="List Classes with Missing Label" />
-<div id="sgvizler-div-missingsuperclass"
+<div id="sgvizler-div-missinglabel"
          data-sgvizler-query="
-select ?class ?subtop
+select ?class
 FROM <http://www.snik.eu/ontology>
 {
 ?class a owl:Class.
