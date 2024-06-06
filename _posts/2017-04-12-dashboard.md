@@ -17,7 +17,8 @@ select replace(str(COALESCE(?subTop, 'none')),'http://www.snik.eu/ontology/meta/
 from <http://www.snik.eu/ontology>
 {
  ?class a owl:Class.
- OPTIONAL {?class meta:subTopClass ?subTop.}
+ ?class meta:subTopClass|a ?subTop.
+ ?subTop rdfs:subClassOf meta:Top.
 }"
          data-sgvizler-chart="google.visualization.PieChart"
          style="width:100%; height:400px;">
