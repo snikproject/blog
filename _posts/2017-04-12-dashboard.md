@@ -8,6 +8,43 @@ use_sgvizler: true
 use_sgvizler_chart: true
 ---
 
+# In total
+
+<div id="subtops-table"
+         data-sgvizler-query="
+select (replace(str(COALESCE(?subTop, 'none')),'http://www.snik.eu/ontology/meta/','meta:') AS ?type) (count(?class) AS ?count)
+from <http://www.snik.eu/ontology>
+{
+ ?class a owl:Class.
+ ?class meta:subTopClass|a ?subTop.
+ ?subTop rdfs:subClassOf meta:Top.
+}"
+         data-sgvizler-chart="google.visualization.Table"
+         style="width:100%; height:400px;">
+</div>
+
+<div id="table"
+         data-sgvizler-query="
+SELECT *
+{
+{SELECT (COUNT(?class) AS ?classes)                    
+from <http://www.snik.eu/ontology>
+{ {?class a owl:Class.} UNION {?class a [rdfs:subClassOf meta:Top]}.} }
+
+{SELECT (COUNT(DISTINCT(?class)) AS ?properties)                    
+from <http://www.snik.eu/ontology>
+{ {?class a owl:DatatypeProperty.} UNION {?class a owl:ObjectProperty}.} }
+
+{SELECT (COUNT(DISTINCT *) AS ?triples)                    
+from <http://www.snik.eu/ontology>
+{?s ?p ?o.}}
+}"
+         data-sgvizler-chart="google.visualization.Table"
+         style="width:100%; height:400px;">
+</div>
+
+# Charts by Subontology
+
 ## Types
 Number of classes per type over all the subontologies. Hover over slices to see their absolute number.
 
