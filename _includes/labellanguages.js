@@ -3,10 +3,11 @@ function languageQuery(graph)
   return `select ?lang count(?class) as ?count
 	from <${graph}>
 	{
+		{?class a meta:EntityType.} UNION {?class a meta:Role.} UNION {?class a meta:Function.} UNION {?class a owl:Class.}
 		{
 			select ('both' as ?lang) ?class
 			{
-				?class a owl:Class; rdfs:label ?label1, ?label2.
+				?class rdfs:label ?label1, ?label2.
 				filter((lang(?label1)='en') AND (lang(?label2)='de'))
 			}
 		}
@@ -14,7 +15,7 @@ function languageQuery(graph)
 		{
 			select ('de' as ?lang) ?class
 			{
-				?class a owl:Class; rdfs:label ?label.
+				?class rdfs:label ?label.
 				filter(lang(?label)='de').
 				filter not exists
         {
@@ -27,7 +28,7 @@ function languageQuery(graph)
 		{
 			select ('en' as ?lang) ?class
 			{
-				?class a owl:Class; rdfs:label ?label.
+				?class rdfs:label ?label.
 				filter(lang(?label)='en').
 				filter not exists
 				{
@@ -40,7 +41,6 @@ function languageQuery(graph)
 		{
 			select ('neither' as ?lang) ?class
 			{
-				?class a owl:Class.
 				filter not exists
 				{
 					?class rdfs:label ?label.
@@ -65,7 +65,7 @@ function diagramFragment()
   for(var i in prefixes)
   {
     var prefix = prefixes[i];
-    //console.log(languageQuery('http://www.snik.eu/ontology/'+prefix));
+    console.log(languageQuery('http://www.snik.eu/ontology/'+prefix));
     div.innerHTML +=
       `<span><h3>${prefix}</h3>
       <div
