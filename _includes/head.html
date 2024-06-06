@@ -23,9 +23,10 @@
   {% include ontologymatching %}
   {% endif %}
   {% if page.use_sgvizler %}
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+	
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script><!-- we need ajax so can't use slim -->
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script type="text/javascript" src="https://mgskjaeveland.github.io/sgvizler/v/0.7/sgvizler.js"></script>
+  <script type="text/javascript" src="https://mgskjaeveland.github.io/sgvizler/v/0.7/sgvizler.js"></script><!-- archived at 0.7 -->
   <script>
   sgvizler
   .prefix("meta", "http://www.snik.eu/ontology/meta/")
