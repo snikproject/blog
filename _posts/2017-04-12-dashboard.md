@@ -103,13 +103,13 @@ from <http://www.snik.eu/ontology/ob>
 from <http://www.snik.eu/ontology/bb>
 from <http://www.snik.eu/ontology/he>
 {
-  ?sub a owl:Class.
+  {?sub a owl:Class.} UNION {?sub a [rdfs:subClassOf meta:Top]}.
   # must be connected to the top
-  filter exists {?sub rdfs:subClassOf* meta:Top.}
+  filter exists {?sub (rdfs:subClassOf|a)* meta:Top.}
  OPTIONAL
  {
-  ?sub rdfs:subClassOf ?super.
-  ?super a owl:Class.
+  ?sub rdfs:subClassOf|a ?super.
+  {?super a owl:Class.} UNION {?super a [rdfs:subClassOf meta:Top]}.
  }
 }"
        data-sgvizler-chart="google.visualization.TreeMap"
